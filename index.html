@@ -136,6 +136,7 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
 .m-file{font-size:.78rem;color:var(--tinta-suave);word-break:break-all}
 .btn-dl{
   margin-top:auto;display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;border:none;cursor:pointer;font-family:inherit;
   background:linear-gradient(150deg,var(--aqua),var(--aqua-fuerte));color:#fff;text-decoration:none;
   font-weight:800;font-size:1rem;letter-spacing:.02em;border-radius:14px;padding:17px 20px;
   box-shadow:0 10px 26px rgba(46,157,135,.35), inset 0 1px 0 rgba(255,255,255,.35);
@@ -146,7 +147,7 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
 .btn-abrir{display:block;text-align:center;font-size:.85rem;font-weight:600;color:var(--tinta-suave);text-decoration:none;padding:8px}
 .btn-abrir:hover{color:var(--aqua-fuerte)}
 .versiones{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.ver{border:1px solid var(--borde);border-radius:12px;overflow:hidden;text-decoration:none;color:var(--tinta);background:#fff;transition:transform .25s var(--ease), box-shadow .25s}
+.ver{border:1px solid var(--borde);border-radius:12px;overflow:hidden;text-decoration:none;color:var(--tinta);background:#fff;transition:transform .25s var(--ease), box-shadow .25s;padding:0;cursor:pointer;font-family:inherit;display:block;text-align:left;width:100%}
 .ver:hover{transform:translateY(-3px);box-shadow:var(--sombra-flota)}
 .ver img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
 .ver span{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;font-weight:700;padding:8px 10px}
@@ -442,7 +443,29 @@ function busca(file){
 
 /* ══ MODAL ══ */
 const $velo=document.getElementById("velo"), $modal=document.getElementById("modal");
+/* Descarga SIN salir de la página: trae el archivo, lo pasa a blob y lo baja.
+   Así ningún navegador (sobre todo en celular) abre pestañas nuevas. */
+async function descargar(url, nombre, btn){
+  const txt = btn ? btn.innerHTML : null;
+  if(btn){ btn.innerHTML="⏳ &nbsp;DESCARGANDO…"; btn.disabled=true; }
+  try{
+    const r = await fetch(url);
+    if(!r.ok) throw new Error("no se encontró el archivo");
+    const u = URL.createObjectURL(await r.blob());
+    const a = document.createElement("a");
+    a.href = u; a.download = nombre || "archivo";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u), 8000);
+    if(btn){ btn.innerHTML="✓ &nbsp;LISTO"; setTimeout(()=>{ btn.innerHTML=txt; btn.disabled=false; },1600); return }
+  }catch(err){
+    alert("No se pudo descargar: "+err.message);
+  }
+  if(btn){ btn.innerHTML=txt; btn.disabled=false; }
+}
+
 document.addEventListener("click",e=>{
+  const dl=e.target.closest("[data-dl]");
+  if(dl){ e.preventDefault(); e.stopPropagation(); descargar(dl.dataset.dl, dl.dataset.nombre, dl); return }
   const bor=e.target.closest(".borrar");
   if(bor){e.stopPropagation();borrarNuevo(+bor.dataset.id);return}
   const cel=e.target.closest(".celda");
@@ -479,7 +502,7 @@ function abrir(file, sec){
         <div class="m-desc">Este espacio espera la versión editada y lista para subir de <b>${nomArchivo}</b>. Cuando exista, va a aparecer acá, en el mismo lugar que ocupa el original.</div>
         ${datos}
         <div class="m-file">Original: media/${file}</div>
-        <a class="btn-abrir" href="${SDL+file}" target="_blank">Ver el original ↗</a>
+        <button class="btn-dl" data-dl="${SDL+file}" data-nombre="${nomArchivo}">⬇ &nbsp;DESCARGAR EL ORIGINAL</button>
       </div>`;
   } else if(espejo && eds){
     $modal.innerHTML=`
@@ -489,10 +512,10 @@ function abrir(file, sec){
         <div class="m-tit">${it.nombre} · editadas</div>
         <div class="m-desc">${eds.length} versiones editadas a partir de <b>${nomArchivo}</b>. Tocá cualquiera para descargarla.</div>
         <div class="versiones">
-          ${eds.map(v=>`<a class="ver" href="${v.file}" download><img src="${v.file}" loading="lazy" alt=""><span>${v.nombre}<i>⬇</i></span></a>`).join("")}
+          ${eds.map(v=>`<button class="ver" data-dl="${v.file}" data-nombre="${v.file.split("/").pop()}"><img src="${v.file}" loading="lazy" alt=""><span>${v.nombre}<i>⬇</i></span></button>`).join("")}
         </div>
         ${datos}
-        <a class="btn-dl" href="${eds[0].file}" download>⬇ &nbsp;DESCARGAR PRINCIPAL</a>
+        <button class="btn-dl" data-dl="${eds[0].file}" data-nombre="${eds[0].file.split("/").pop()}">⬇ &nbsp;DESCARGAR PRINCIPAL</button>
       </div>`;
   } else {
     const media= it.video
@@ -506,8 +529,7 @@ function abrir(file, sec){
         <div class="m-desc">${it.desc}</div>
         ${datos}
         <div class="m-file">Archivo: media/${file}</div>
-        <a class="btn-dl" href="${SDL+file}" download="${nomArchivo}">⬇ &nbsp;DESCARGAR</a>
-        <a class="btn-abrir" href="${SDL+file}" target="_blank">Abrir en pestaña nueva ↗</a>
+        <button class="btn-dl" data-dl="${SDL+file}" data-nombre="${nomArchivo}">⬇ &nbsp;DESCARGAR</button>
       </div>`;
   }
   $velo.classList.add("abierto");
@@ -638,8 +660,7 @@ function abrirNuevo(id){
         <div class="m-dato"><b>Fecha</b><span>${fechaCorta(r.fecha)}</span></div>
         <div class="m-dato"><b>Archivo</b><span>${r.tipo} · ${kb(r.peso)}</span></div>
       </div>
-      <a class="btn-dl" href="${u}" download="${r.nombre}">⬇ &nbsp;DESCARGAR</a>
-      <a class="btn-abrir" href="${u}" target="_blank">Abrir en pestaña nueva ↗</a>
+      <button class="btn-dl" data-dl="${u}" data-nombre="${r.nombre}">⬇ &nbsp;DESCARGAR</button>
     </div>`;
   $velo.classList.add("abierto");
   document.body.style.overflow="hidden";
