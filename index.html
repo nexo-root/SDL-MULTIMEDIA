@@ -144,6 +144,8 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
 }
 .btn-dl:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(46,157,135,.45)}
 .btn-dl:active{transform:translateY(0)}
+.dl-hint{font-size:.76rem;line-height:1.4;color:var(--tinta-suave);text-align:center;margin-top:-2px}
+.dl-hint b{color:var(--aqua-fuerte);font-weight:700}
 .btn-abrir{display:block;text-align:center;font-size:.85rem;font-weight:600;color:var(--tinta-suave);text-decoration:none;padding:8px}
 .btn-abrir:hover{color:var(--aqua-fuerte)}
 .versiones{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -443,24 +445,52 @@ function busca(file){
 
 /* ══ MODAL ══ */
 const $velo=document.getElementById("velo"), $modal=document.getElementById("modal");
-/* Descarga SIN salir de la página: trae el archivo, lo pasa a blob y lo baja.
-   Así ningún navegador (sobre todo en celular) abre pestañas nuevas. */
+/* ¿Estamos en un celular/tablet? */
+const ESMOVIL = matchMedia("(pointer:coarse)").matches || navigator.maxTouchPoints > 0;
+const TXT_DL  = ESMOVIL ? "⬇ &nbsp;GUARDAR EN LA GALERÍA" : "⬇ &nbsp;DESCARGAR";
+const HINT_DL = ESMOVIL ? `<div class="dl-hint">Se abre el menú del celular: elegí <b>«Guardar imagen»</b> o <b>«Guardar video»</b> y va derecho a tu galería</div>` : "";
+
+/* Bajar el archivo SIN salir de la página.
+   En celular usa el menú nativo de compartir, que trae "Guardar imagen" /
+   "Guardar video" y manda el archivo derecho a la galería. Si el celular no
+   lo soporta, cae en la descarga clásica (carpeta Descargas). */
 async function descargar(url, nombre, btn){
   const txt = btn ? btn.innerHTML : null;
-  if(btn){ btn.innerHTML="⏳ &nbsp;DESCARGANDO…"; btn.disabled=true; }
+  const set = t => { if(btn) btn.innerHTML = t; };
+  if(btn){ set("⏳ &nbsp;PREPARANDO…"); btn.disabled = true; }
+  const listo = t => { set(t); setTimeout(()=>{ set(txt); if(btn) btn.disabled=false; }, 1800); };
+
   try{
     const r = await fetch(url);
     if(!r.ok) throw new Error("no se encontró el archivo");
-    const u = URL.createObjectURL(await r.blob());
+    const blob = await r.blob();
+    const tipo = blob.type || (/\.(mp4|mov)$/i.test(nombre) ? "video/mp4" : "image/jpeg");
+    const file = new File([blob], nombre || "archivo", { type: tipo });
+
+    // 1) Celular: menú nativo -> "Guardar imagen" lo deja en la galería
+    if(ESMOVIL && navigator.canShare && navigator.canShare({ files:[file] })){
+      try{
+        await navigator.share({ files:[file], title: nombre });
+        listo("✓ &nbsp;GUARDADO");
+        return;
+      }catch(err){
+        if(err.name === "AbortError"){ set(txt); if(btn) btn.disabled=false; return; }
+        // si el compartir falla por otro motivo, seguimos con la descarga normal
+      }
+    }
+
+    // 2) Descarga clásica (compu, o celular sin soporte)
+    const u = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = u; a.download = nombre || "archivo";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(u), 8000);
-    if(btn){ btn.innerHTML="✓ &nbsp;LISTO"; setTimeout(()=>{ btn.innerHTML=txt; btn.disabled=false; },1600); return }
+    listo("✓ &nbsp;LISTO");
+    return;
   }catch(err){
-    alert("No se pudo descargar: "+err.message);
+    alert("No se pudo descargar: " + err.message);
   }
-  if(btn){ btn.innerHTML=txt; btn.disabled=false; }
+  set(txt); if(btn) btn.disabled = false;
 }
 
 document.addEventListener("click",e=>{
@@ -502,7 +532,8 @@ function abrir(file, sec){
         <div class="m-desc">Este espacio espera la versión editada y lista para subir de <b>${nomArchivo}</b>. Cuando exista, va a aparecer acá, en el mismo lugar que ocupa el original.</div>
         ${datos}
         <div class="m-file">Original: media/${file}</div>
-        <button class="btn-dl" data-dl="${SDL+file}" data-nombre="${nomArchivo}">⬇ &nbsp;DESCARGAR EL ORIGINAL</button>
+        <button class="btn-dl" data-dl="${SDL+file}" data-nombre="${nomArchivo}">${TXT_DL.replace("DESCARGAR","DESCARGAR EL ORIGINAL")}</button>
+        ${HINT_DL}
       </div>`;
   } else if(espejo && eds){
     $modal.innerHTML=`
@@ -515,7 +546,8 @@ function abrir(file, sec){
           ${eds.map(v=>`<button class="ver" data-dl="${v.file}" data-nombre="${v.file.split("/").pop()}"><img src="${v.file}" loading="lazy" alt=""><span>${v.nombre}<i>⬇</i></span></button>`).join("")}
         </div>
         ${datos}
-        <button class="btn-dl" data-dl="${eds[0].file}" data-nombre="${eds[0].file.split("/").pop()}">⬇ &nbsp;DESCARGAR PRINCIPAL</button>
+        <button class="btn-dl" data-dl="${eds[0].file}" data-nombre="${eds[0].file.split("/").pop()}">${TXT_DL}</button>
+        ${HINT_DL}
       </div>`;
   } else {
     const media= it.video
@@ -529,7 +561,8 @@ function abrir(file, sec){
         <div class="m-desc">${it.desc}</div>
         ${datos}
         <div class="m-file">Archivo: media/${file}</div>
-        <button class="btn-dl" data-dl="${SDL+file}" data-nombre="${nomArchivo}">⬇ &nbsp;DESCARGAR</button>
+        <button class="btn-dl" data-dl="${SDL+file}" data-nombre="${nomArchivo}">${TXT_DL}</button>
+        ${HINT_DL}
       </div>`;
   }
   $velo.classList.add("abierto");
@@ -660,7 +693,8 @@ function abrirNuevo(id){
         <div class="m-dato"><b>Fecha</b><span>${fechaCorta(r.fecha)}</span></div>
         <div class="m-dato"><b>Archivo</b><span>${r.tipo} · ${kb(r.peso)}</span></div>
       </div>
-      <button class="btn-dl" data-dl="${u}" data-nombre="${r.nombre}">⬇ &nbsp;DESCARGAR</button>
+      <button class="btn-dl" data-dl="${u}" data-nombre="${r.nombre}">${TXT_DL}</button>
+      ${HINT_DL}
     </div>`;
   $velo.classList.add("abierto");
   document.body.style.overflow="hidden";
