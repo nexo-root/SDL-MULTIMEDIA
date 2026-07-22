@@ -112,7 +112,7 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
 .badge.vid{left:auto;right:10px;background:rgba(23,52,44,.65);color:#fff}
 
 /* ── modal glass ── */
-.velo{position:fixed;inset:0;background:rgba(23,52,44,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:50;display:none;align-items:center;justify-content:center;padding:26px}
+.velo{position:fixed;inset:0;background:rgba(23,52,44,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:50;display:none;align-items:center;justify-content:center;padding:26px;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .velo.abierto{display:flex}
 .modal{
   width:min(1060px,100%);max-height:92vh;overflow:auto;border-radius:22px;
@@ -156,8 +156,8 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
 .ver span i{font-style:normal;color:var(--aqua-fuerte)}
 .m-x{position:absolute;top:16px;right:16px;width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.85);color:var(--tinta);font-size:1.05rem;cursor:pointer;box-shadow:var(--sombra-card);transition:transform .25s var(--ease)}
 .m-x:hover{transform:rotate(90deg)}
-.velo{position:fixed}
-.m-wrap{position:relative;width:min(1060px,100%)}
+.m-wrap{position:relative;width:min(1060px,100%);margin:auto}
+.m-cerrar{display:none;width:100%;margin-top:12px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;letter-spacing:.05em;color:var(--tinta);background:rgba(255,255,255,.9);border-radius:14px;padding:16px}
 
 /* ══ SECCIÓN SUBIR ══ */
 .subir-zona{padding:16px 0 2px}
@@ -208,9 +208,17 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
   nav{padding:10px 18px 14px;gap:9px}
   .tab{min-width:calc(50% - 9px);padding:10px 13px}
   .panel{padding:4px 18px 50px}
-  .modal{grid-template-columns:1fr;max-height:88vh}
-  .m-media{min-height:220px;max-height:38vh}
-  .m-media img,.m-media video{max-height:38vh}
+  /* En celular el modal es una hoja de pantalla completa: se desplaza entera,
+     nada queda cortado por las barras del navegador, y la X siempre se ve. */
+  .velo{padding:0;align-items:flex-start}
+  .m-wrap{width:100%;margin:0}
+  .m-info{padding-bottom:96px}   /* aire para que el boton CERRAR fijo no tape nada */
+  .modal{grid-template-columns:1fr;max-height:none;border-radius:0;min-height:100dvh;background:rgba(255,255,255,.94)}
+  .m-media{min-height:0;max-height:46dvh;padding-top:56px}
+  .m-media img,.m-media video{max-height:46dvh}
+  .m-x{position:fixed;top:12px;right:12px;z-index:60;background:rgba(255,255,255,.96);box-shadow:0 4px 18px rgba(23,52,44,.35)}
+  .m-cerrar{display:block;position:fixed;left:14px;right:14px;bottom:14px;width:auto;margin:0;z-index:60;
+            background:rgba(255,255,255,.96);box-shadow:0 6px 22px rgba(23,52,44,.3);backdrop-filter:blur(10px)}
 }
 
 /* ══ CELULAR ══ todo más compacto y las fotos en 3 columnas */
@@ -255,7 +263,7 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
 
   .velo{padding:12px}
   .modal{border-radius:16px;max-height:90vh}
-  .m-info{padding:18px 18px 16px;gap:10px}
+  .m-info{padding:18px 18px 96px;gap:10px}
   .m-cat{font-size:.68rem}
   .m-tit{font-size:1.22rem}
   .m-desc{font-size:.85rem;line-height:1.5}
@@ -292,6 +300,7 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
   <div class="m-wrap">
     <button class="m-x" id="mx">✕</button>
     <div class="modal" id="modal"></div>
+    <button class="m-cerrar" id="mcerrar">✕ &nbsp;CERRAR</button>
   </div>
 </div>
 
@@ -500,7 +509,7 @@ document.addEventListener("click",e=>{
   if(bor){e.stopPropagation();borrarNuevo(+bor.dataset.id);return}
   const cel=e.target.closest(".celda");
   if(cel){ cel.dataset.nuevo ? abrirNuevo(+cel.dataset.nuevo) : abrir(cel.dataset.file, cel.dataset.sec); return}
-  if(e.target.id==="velo"||e.target.id==="mx"||e.target.closest("#mx")) cerrar();
+  if(e.target.id==="velo"||e.target.closest("#mx")||e.target.closest("#mcerrar")) cerrar();
 });
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape") cerrar();
@@ -565,14 +574,31 @@ function abrir(file, sec){
         ${HINT_DL}
       </div>`;
   }
-  $velo.classList.add("abierto");
-  document.body.style.overflow="hidden";
+  mostrarModal();
 }
-function cerrar(){
+/* Abrir y cerrar el modal. Se agrega un paso al historial para que el botón
+   "atrás" del celular cierre la imagen en vez de salir de la página. */
+let enHistorial = false;
+function mostrarModal(){
+  $velo.scrollTop = 0;
+  $velo.classList.add("abierto");
+  document.body.style.overflow = "hidden";
+  if(!enHistorial){
+    try{ history.pushState({modalSDL:1}, ""); enHistorial = true; }catch(e){}
+  }
+}
+function cerrarReal(){
   $velo.classList.remove("abierto");
   $modal.querySelectorAll("video").forEach(v=>v.pause());
-  document.body.style.overflow="";
+  document.body.style.overflow = "";
 }
+function cerrar(){
+  if(enHistorial){ enHistorial = false; try{ history.back(); return; }catch(e){} }
+  cerrarReal();
+}
+window.addEventListener("popstate", ()=>{
+  if($velo.classList.contains("abierto")){ enHistorial = false; cerrarReal(); }
+});
 
 /* ══ NAVEGACIÓN + animación de entrada ══ */
 function ir(i){
@@ -696,8 +722,7 @@ function abrirNuevo(id){
       <button class="btn-dl" data-dl="${u}" data-nombre="${r.nombre}">${TXT_DL}</button>
       ${HINT_DL}
     </div>`;
-  $velo.classList.add("abierto");
-  document.body.style.overflow="hidden";
+  mostrarModal();
 }
 
 abrirBD().then(pintarNuevas).catch(e=>{
