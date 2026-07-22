@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SOLARES DE LORETO MULTIMEDIA</title>
+<style>
+@font-face{font-family:'Montserrat';src:url('fonts/Montserrat.ttf') format('truetype-variations');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Playfair';src:url('fonts/Playfair.ttf') format('truetype-variations');font-weight:400 900;font-display:swap}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --aqua:#4fbfa8; --aqua-fuerte:#2e9d87; --aqua-suave:rgba(79,191,168,.14);
+  --neon1:#00c896; --neon2:#009dff;
+  --tinta:#17342c; --tinta-suave:#5c7a71;
+  --blanco:#ffffff; --naranja:#d8802e;
+  --borde:rgba(23,52,44,.10);
+  --glass-bg:rgba(255,255,255,.62);
+  --sombra-card:0 2px 10px rgba(23,52,44,.06), 0 12px 32px rgba(23,52,44,.08);
+  --sombra-flota:0 6px 18px rgba(23,52,44,.10), 0 24px 56px rgba(46,157,135,.16);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html,body{height:100%}
+body{
+  font-family:'Montserrat',system-ui,sans-serif;
+  background:var(--blanco); color:var(--tinta);
+  overflow:hidden;
+}
+/* blobs suaves detrás del glass: el fondo sigue leyéndose blanco */
+.blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.5}
+.b1{width:520px;height:520px;background:#bdeee3;top:-160px;left:-120px;animation:drift1 34s ease-in-out infinite alternate}
+.b2{width:460px;height:460px;background:#d8f3ec;bottom:-180px;right:-100px;animation:drift2 40s ease-in-out infinite alternate}
+.b3{width:340px;height:340px;background:#e8f8f3;top:38%;left:52%;animation:drift1 46s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate(90px,60px) scale(1.12)}}
+@keyframes drift2{to{transform:translate(-70px,-80px) scale(.94)}}
+
+.app{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column}
+
+/* ── header ── */
+header{display:flex;align-items:center;gap:16px;padding:20px 34px 10px}
+.h-tit{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.65rem;line-height:1.1;letter-spacing:.02em}
+.h-tit .n1{color:var(--neon1);text-shadow:0 0 16px rgba(0,220,160,.5), 0 0 34px rgba(0,220,160,.25)}
+.h-tit .n2{color:var(--neon2);text-shadow:0 0 16px rgba(0,157,255,.5), 0 0 34px rgba(0,157,255,.25)}
+.h-sub{font-size:.8rem;font-weight:600;letter-spacing:.06em;color:var(--tinta-suave);margin-top:4px}
+.h-sub b{color:var(--aqua-fuerte);font-weight:700}
+
+/* ── tabs flotantes ── */
+nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
+.tab{
+  flex:1;min-width:132px;cursor:pointer;border:1px solid rgba(255,255,255,.75);
+  background:var(--glass-bg);
+  backdrop-filter:blur(14px) saturate(185%);-webkit-backdrop-filter:blur(14px) saturate(185%);
+  border-radius:16px;padding:13px 18px;
+  box-shadow:var(--sombra-card), inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(23,52,44,.04);
+  display:flex;align-items:center;gap:12px;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .35s;
+  user-select:none;
+}
+.tab:hover{transform:translateY(-3px);box-shadow:var(--sombra-flota)}
+.tab.on{background:linear-gradient(160deg, rgba(79,191,168,.20), rgba(255,255,255,.68));border-color:rgba(79,191,168,.45);transform:translateY(-4px);box-shadow:var(--sombra-flota)}
+.tab .ico{font-size:1.25rem}
+.tab .t-nom{font-weight:800;font-size:.96rem}
+.tab .t-des{font-size:.74rem;color:var(--tinta-suave);font-weight:500;margin-top:2px}
+.tab .t-num{margin-left:auto;flex:0 0 auto;white-space:nowrap;background:var(--aqua-suave);color:var(--aqua-fuerte);font-weight:800;font-size:.86rem;border-radius:99px;padding:5px 12px;transition:background .35s,color .35s}
+.tab .ico{flex:0 0 auto}
+.tab.on .t-num{background:var(--aqua-fuerte);color:#fff}
+
+/* ── track horizontal ── */
+.track-wrap{flex:1;overflow:hidden}
+.track{display:flex;height:100%;transition:transform .65s var(--ease)}
+.panel{height:100%;overflow-y:auto;padding:6px 34px 60px;scrollbar-width:thin;scrollbar-color:var(--aqua) transparent}
+.panel::-webkit-scrollbar{width:9px}
+.panel::-webkit-scrollbar-thumb{background:rgba(79,191,168,.4);border-radius:99px}
+
+.resumen{font-size:.9rem;font-weight:600;color:var(--tinta-suave);background:var(--aqua-suave);border:1px solid rgba(79,191,168,.25);border-radius:10px;padding:8px 14px;display:inline-block;margin:6px 0 4px}
+.resumen b{color:var(--aqua-fuerte)}
+
+/* ── categorías y grillas ── */
+.cat{margin-top:26px}
+.cat-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--borde);padding-bottom:8px;margin-bottom:14px}
+.cat-head h2{font-family:'Playfair',serif;font-weight:800;font-size:1.55rem}
+.cat:nth-of-type(odd) .cat-head h2{color:var(--neon1)}
+.cat:nth-of-type(even) .cat-head h2{color:var(--neon2)}
+.cat-head span{font-size:.95rem;font-weight:800;color:var(--naranja)}
+.cat-head small{margin-left:auto;font-size:.85rem;color:var(--neon2);font-weight:600}
+.cat:nth-of-type(even) .cat-head small{color:var(--neon1)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+
+.celda{
+  background:#fff;border:1px solid var(--borde);border-radius:14px;overflow:hidden;cursor:pointer;
+  box-shadow:var(--sombra-card);
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s;
+  opacity:0;transform:translateY(14px);
+}
+.celda.vis{opacity:1;transform:translateY(0)}
+.celda:hover{transform:translateY(-4px);box-shadow:var(--sombra-flota);border-color:rgba(79,191,168,.5)}
+.thumb{position:relative;aspect-ratio:4/3;background:#eef5f2;overflow:hidden}
+.thumb img,.thumb video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+.celda:hover .thumb img,.celda:hover .thumb video{transform:scale(1.05)}
+.celda figcaption{padding:10px 13px;font-size:.86rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.celda figcaption em{font-style:normal;color:var(--aqua-fuerte);font-weight:600;font-size:.72rem;margin-left:auto;white-space:nowrap}
+
+/* pendientes (espejo flyer) */
+.celda.pend .thumb img{filter:grayscale(1) brightness(1.12);opacity:.38}
+.celda.pend .thumb::after{content:'';position:absolute;inset:0;border:2px dashed rgba(216,128,46,.55);border-radius:0;margin:8px;border-radius:10px}
+.badge{position:absolute;top:10px;left:10px;font-size:.6rem;font-weight:800;letter-spacing:.05em;border-radius:99px;padding:4px 10px;backdrop-filter:blur(6px)}
+.badge.p{background:rgba(255,244,232,.9);color:var(--naranja);animation:pulso 2.6s ease-in-out infinite}
+.badge.l{background:rgba(224,247,241,.92);color:var(--aqua-fuerte)}
+@keyframes pulso{50%{opacity:.55}}
+.badge.vid{left:auto;right:10px;background:rgba(23,52,44,.65);color:#fff}
+
+/* ── modal glass ── */
+.velo{position:fixed;inset:0;background:rgba(23,52,44,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:50;display:none;align-items:center;justify-content:center;padding:26px}
+.velo.abierto{display:flex}
+.modal{
+  width:min(1060px,100%);max-height:92vh;overflow:auto;border-radius:22px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(24px) saturate(190%);-webkit-backdrop-filter:blur(24px) saturate(190%);
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 30px 90px rgba(23,52,44,.30), inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(23,52,44,.05);
+  display:grid;grid-template-columns:1.35fr 1fr;
+  animation:pop .38s var(--ease);
+}
+@keyframes pop{from{transform:scale(.95) translateY(12px);opacity:0}}
+.m-media{background:#0d1f1a;display:flex;align-items:center;justify-content:center;min-height:320px}
+.m-media img,.m-media video{width:100%;height:100%;max-height:92vh;object-fit:contain}
+.m-info{padding:28px 28px 24px;display:flex;flex-direction:column;gap:13px}
+.m-cat{font-size:.82rem;font-weight:800;letter-spacing:.08em;color:var(--neon2)}
+.m-tit{font-family:'Playfair',serif;font-weight:800;font-size:1.9rem;line-height:1.15}
+.m-desc{font-size:1.02rem;line-height:1.6;color:#2c4a42}
+.m-datos{display:grid;gap:8px;margin-top:2px}
+.m-dato{display:flex;gap:12px;font-size:.95rem;background:rgba(79,191,168,.08);border:1px solid rgba(79,191,168,.18);border-radius:10px;padding:10px 14px;line-height:1.4}
+.m-dato b{min-width:112px;color:var(--neon1);font-weight:800}
+.m-file{font-size:.78rem;color:var(--tinta-suave);word-break:break-all}
+.btn-dl{
+  margin-top:auto;display:flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(150deg,var(--aqua),var(--aqua-fuerte));color:#fff;text-decoration:none;
+  font-weight:800;font-size:1rem;letter-spacing:.02em;border-radius:14px;padding:17px 20px;
+  box-shadow:0 10px 26px rgba(46,157,135,.35), inset 0 1px 0 rgba(255,255,255,.35);
+  transition:transform .25s var(--ease), box-shadow .25s;
+}
+.btn-dl:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(46,157,135,.45)}
+.btn-dl:active{transform:translateY(0)}
+.btn-abrir{display:block;text-align:center;font-size:.85rem;font-weight:600;color:var(--tinta-suave);text-decoration:none;padding:8px}
+.btn-abrir:hover{color:var(--aqua-fuerte)}
+.versiones{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.ver{border:1px solid var(--borde);border-radius:12px;overflow:hidden;text-decoration:none;color:var(--tinta);background:#fff;transition:transform .25s var(--ease), box-shadow .25s}
+.ver:hover{transform:translateY(-3px);box-shadow:var(--sombra-flota)}
+.ver img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.ver span{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;font-weight:700;padding:8px 10px}
+.ver span i{font-style:normal;color:var(--aqua-fuerte)}
+.m-x{position:absolute;top:16px;right:16px;width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.85);color:var(--tinta);font-size:1.05rem;cursor:pointer;box-shadow:var(--sombra-card);transition:transform .25s var(--ease)}
+.m-x:hover{transform:rotate(90deg)}
+.velo{position:fixed}
+.m-wrap{position:relative;width:min(1060px,100%)}
+
+/* ══ SECCIÓN SUBIR ══ */
+.subir-zona{padding:16px 0 2px}
+.btn-subir{
+  width:100%;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;
+  font-weight:900;font-size:1.5rem;letter-spacing:.03em;color:#fff;
+  border-radius:28px;padding:36px 24px;
+  background:linear-gradient(120deg,var(--neon1),var(--neon2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 14px 42px rgba(0,157,255,.30), 0 6px 20px rgba(0,200,150,.30);
+  display:flex;align-items:center;justify-content:center;gap:16px;text-align:center;
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s;
+  animation:latir 3.4s ease-in-out infinite;
+}
+@keyframes latir{50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 18px 54px rgba(0,157,255,.42), 0 8px 26px rgba(0,200,150,.42)}}
+.btn-subir:hover{transform:translateY(-3px);filter:brightness(1.07)}
+.btn-subir:active{transform:translateY(0) scale(.995)}
+.btn-subir.drag{filter:brightness(1.15);transform:scale(1.012);outline:3px dashed rgba(255,255,255,.8);outline-offset:-12px}
+.btn-subir .flecha{font-size:1.8rem;animation:sube 2.2s ease-in-out infinite}
+@keyframes sube{50%{transform:translateY(-6px)}}
+.subir-tools{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:.86rem;font-weight:600;color:var(--tinta-suave)}
+.subir-tools .uso{margin-left:auto;background:var(--aqua-suave);border-radius:99px;padding:6px 14px;color:var(--aqua-fuerte);font-weight:700}
+.subir-hint{font-size:.82rem;color:var(--tinta-suave);margin-top:10px;text-align:center;font-weight:500}
+
+.dos-col{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:26px}
+.col-head{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid;padding-bottom:8px;margin-bottom:14px}
+.col-head h2{font-family:'Playfair',serif;font-weight:800;font-size:1.55rem}
+.col-i .col-head{border-color:rgba(0,200,150,.35)} .col-i h2{color:var(--neon1)}
+.col-v .col-head{border-color:rgba(0,157,255,.35)} .col-v h2{color:var(--neon2)}
+.col-head span{font-size:.95rem;font-weight:800;color:var(--naranja)}
+.grid-n{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.vacio{border:2px dashed rgba(23,52,44,.14);border-radius:14px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:600;color:rgba(23,52,44,.3);text-align:center;padding:12px;grid-column:1/-1}
+.borrar{position:absolute;top:8px;right:8px;width:28px;height:28px;border:none;border-radius:50%;background:rgba(255,255,255,.9);color:#c0392b;font-size:.85rem;font-weight:800;cursor:pointer;opacity:0;transition:opacity .25s, transform .25s}
+.celda:hover .borrar{opacity:1}
+.borrar:hover{transform:scale(1.12)}
+
+@media(max-width:860px){
+  .dos-col{grid-template-columns:1fr}
+  .btn-subir{font-size:1.1rem;padding:28px 18px;border-radius:22px}
+  header{padding:16px 18px 6px}
+  nav{padding:10px 18px 14px;gap:9px}
+  .tab{min-width:calc(50% - 9px);padding:10px 13px}
+  .panel{padding:4px 18px 50px}
+  .modal{grid-template-columns:1fr;max-height:88vh}
+  .m-media{min-height:220px;max-height:38vh}
+  .m-media img,.m-media video{max-height:38vh}
+}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<div class="app">
+  <header>
+    <div>
+      <div class="h-tit"><span class="n1">SOLARES DE LORETO</span> <span class="n2">MULTIMEDIA</span></div>
+      <div class="h-sub">USO INTERNO · <b>CMD</b> · Colonia Santa Ana, Sección Loreto, Candelaria, Misiones</div>
+    </div>
+  </header>
+
+  <nav id="tabs"></nav>
+
+  <div class="track-wrap">
+    <div class="track" id="track"></div>
+  </div>
+</div>
+
+<div class="velo" id="velo">
+  <div class="m-wrap">
+    <button class="m-x" id="mx">✕</button>
+    <div class="modal" id="modal"></div>
+  </div>
+</div>
+
+<script>
+/* ══ DATOS ══ Todo vive dentro de esta misma carpeta: media/ y flyers/ */
+const SDL = "media/";
+const FLY = "flyers/";
+const PROY = "Solares de Loreto (INM-008) · Loteo turístico-residencial de 20 ha, 20 manzanas y ~170 lotes sobre el río Yabebiry.";
+
+function serie(pref, carpeta, n, nom, desc, drive, ext){
+  const out=[];
+  for(let i=1;i<=n;i++){
+    const nn=String(i).padStart(2,"0");
+    out.push({file:carpeta+pref+nn+(ext||".jpg"), nombre:nom+" "+nn, desc, drive});
+  }
+  return out;
+}
+
+const CATS_IMG = [
+  { id:"aereas", nombre:"Aéreas del loteo", drive:"Drive · CIA CMD - Solares de Loreto / INM-008",
+    items: serie("aerea-loteo-", "aereas-loteo/", 6, "Aérea",
+      "Toma aérea de drone de la cuadrícula del loteo: manzanas abiertas, calles de tierra colorada y selva paranaense alrededor. 1280×720, ideal para hero de flyers y reels.",
+      "Drive / INM-008") },
+  { id:"mayo", nombre:"Avance de obra · Mayo 2026", drive:"Drive · Imágenes / Avance",
+    items: serie("mayo2026-", "avance-mayo2026/", 6, "Avance mayo",
+      "Vista aérea del avance de obra a mayo 2026: la cuadrícula con calles ya abiertas, desde distintos ángulos. Muestra el progreso real del loteo. Alta resolución.",
+      "Drive / Imágenes / Avance mayo 2026") },
+  { id:"entorno", nombre:"Entorno de Loreto", drive:"Drive · Imágenes / Entorno",
+    items: [
+      {file:"entorno-loreto/naturaleza-loreto01.jpg", nombre:"Naturaleza 01", desc:"Selva y vegetación del entorno inmediato del loteo.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/naturaleza-loreto02-arroyo-yabebiri.jpg", nombre:"Arroyo Yabebiry 02", desc:"El arroyo Yabebiry, el gran diferencial natural del loteo: acceso al río y muelle privado en el master plan.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/naturaleza-loreto03-arroyo-yabebiri.jpg", nombre:"Arroyo Yabebiry 03", desc:"El arroyo Yabebiry entre la selva paranaense, aguas arriba del predio.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/naturaleza-loreto04-arroyo-yabebiri.jpg", nombre:"Arroyo Yabebiry 04", desc:"Costa del arroyo Yabebiry, zona de futuro muelle y kayaks del master plan.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/ruinas-jesuiticas-loreto01.jpg", nombre:"Ruinas jesuíticas 01", desc:"Ruinas jesuíticas de Loreto, patrimonio histórico a minutos del loteo: columnas de piedra y senderos empedrados.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/ruinas-jesuiticas-loreto02.jpg", nombre:"Ruinas jesuíticas 02", desc:"Muros y columnas de piedra de la reducción jesuítica de Loreto.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/ruinas-jesuiticas-loreto03.jpg", nombre:"Ruinas jesuíticas 03", desc:"Senderos y vegetación entre las ruinas jesuíticas de Loreto.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/iglesia-loreto.jpg", nombre:"Iglesia de Loreto", desc:"La iglesia del pueblo de Loreto, parte del entorno histórico del proyecto.", drive:"Drive / Imágenes / Entorno"},
+      {file:"entorno-loreto/hombres-plano.jpg", nombre:"Equipo con plano", desc:"El equipo revisando el plano del loteo en el terreno.", drive:"Drive / Imágenes / Entorno"},
+    ]},
+  { id:"drone", nombre:"Loteo · Drone y mantenimiento", drive:"Drive · Imágenes / Drone",
+    items: [
+      {file:"loteo-drone/drone-01-SDL.jpg", nombre:"Drone 01", desc:"Toma de drone del predio completo. Archivo de máxima resolución (3.4 MB).", drive:"Drive / Imágenes / Drone"},
+      {file:"loteo-drone/drone-02-SDL.jpg", nombre:"Drone 02", desc:"Toma de drone del loteo y su entorno de selva.", drive:"Drive / Imágenes / Drone"},
+      {file:"loteo-drone/drone-auto01-SDL.jpg", nombre:"Drone con auto 01", desc:"Drone con vehículo dentro del loteo: da escala real a las calles abiertas.", drive:"Drive / Imágenes / Drone"},
+      {file:"loteo-drone/drone-auto02-SDL.jpg", nombre:"Drone con auto 02", desc:"Segunda toma con vehículo en el loteo, escala de calles y manzanas.", drive:"Drive / Imágenes / Drone"},
+      {file:"loteo-drone/tractor-mantenimiento.jpg", nombre:"Tractor mantenimiento", desc:"Tractor realizando el mantenimiento del predio: el loteo se mantiene activo.", drive:"Drive / Imágenes / Drone"},
+      {file:"loteo-drone/kml-celular-aereo-SDL.png", nombre:"KML georreferencia 01", desc:"Captura satelital con la georreferencia KML del loteo sobre el mapa real.", drive:"Drive / Imágenes / Drone"},
+      {file:"loteo-drone/kml-celular-aereo2-SDL.png", nombre:"KML georreferencia 02", desc:"Segunda captura satelital con el polígono KML del predio.", drive:"Drive / Imágenes / Drone"},
+    ]},
+  { id:"logo", nombre:"Marca", drive:"Drive · Imágenes / Logo",
+    items: [
+      {file:"logo/logo-SDL.png", nombre:"Logo SDL", desc:"Logo oficial de Solares de Loreto en PNG con fondo transparente. Usar en flyers, videos y documentos.", drive:"Drive / Imágenes / Logo"},
+    ]},
+];
+
+const CATS_VID = [
+  { id:"videos", nombre:"Videos del proyecto", drive:"Drive · CIA CMD - Solares de Loreto / Videos",
+    items: [
+      {file:"videos/video-ubicacion-sdl.mp4", nombre:"Video ubicación", desc:"Video de ubicación del loteo: cómo llegar y recorrido de acceso. 33 MB.", drive:"Drive / Videos", video:true},
+      {file:"videos/video-primera-etapa.mp4", nombre:"Video primera etapa", desc:"Video de la primera etapa de obra del loteo. 31 MB.", drive:"Drive / Videos", video:true},
+    ]},
+];
+
+/* Versiones editadas ya existentes (Fábrica de Flyers CMD) mapeadas a su original */
+const EDITADAS = {
+  "aereas-loteo/aerea-loteo-02.jpg": [
+    {file:FLY+"terreno-A-institucional.png", nombre:"A · Institucional"},
+    {file:FLY+"terreno-B-bold.png", nombre:"B · Bold"},
+    {file:FLY+"terreno-C-minimal.png", nombre:"C · Minimal"},
+    {file:FLY+"bloom-sdl-v1.png", nombre:"Bloom IA v1"},
+  ],
+};
+
+const SECCIONES = [
+  {id:"imagenes", ico:"🖼️", nombre:"Imágenes", des:"Originales sin editar", cats:CATS_IMG, espejo:false},
+  {id:"videos", ico:"🎥", nombre:"Videos", des:"Originales sin editar", cats:CATS_VID, espejo:false},
+  {id:"img-flyer", ico:"✨", nombre:"Imágenes Flyer", des:"Editadas listas para subir", cats:CATS_IMG, espejo:true},
+  {id:"vid-flyer", ico:"🎬", nombre:"Videos Flyer", des:"Editados listos para subir", cats:CATS_VID, espejo:true},
+  {id:"nuevas", ico:"⬆️", nombre:"Imágenes nuevas", des:"Subí lo que tengas de SDL", cats:[], espejo:false, subir:true},
+];
+
+const HTML_SUBIR = `
+<div class="subir-zona">
+  <input type="file" id="fileInput" multiple accept="image/*,video/*" style="display:none">
+  <button class="btn-subir" id="btnSubir"><span class="flecha">⬆</span> SUBIR NUEVAS IMÁGENES / VIDEOS</button>
+  <div class="subir-tools"><span class="uso" id="uso">0 archivos</span></div>
+  <div class="subir-hint">Desde el celular se abre la galería o la cámara · desde la compu también podés arrastrar los archivos sobre el botón</div>
+</div>
+<div class="dos-col">
+  <section class="col-i"><div class="col-head"><h2>Imágenes</h2><span id="cImg">0</span></div><div class="grid-n" id="gridImg"></div></section>
+  <section class="col-v"><div class="col-head"><h2>Videos</h2><span id="cVid">0</span></div><div class="grid-n" id="gridVid"></div></section>
+</div>`;
+
+/* ══ RENDER ══ */
+const $tabs=document.getElementById("tabs"), $track=document.getElementById("track");
+let actual=0;
+
+function cuenta(cats){return cats.reduce((a,c)=>a+c.items.length,0)}
+function cuentaEdit(cats){return cats.reduce((a,c)=>a+c.items.filter(i=>EDITADAS[i.file]).length,0)}
+
+const N=SECCIONES.length;
+$track.style.width=(N*100)+"%";
+
+SECCIONES.forEach((s,i)=>{
+  const t=document.createElement("div");
+  t.className="tab"+(i===0?" on":"");
+  const n = s.subir ? `<span id="numNuevas">0</span>` : (s.espejo ? cuentaEdit(s.cats)+" / "+cuenta(s.cats) : cuenta(s.cats));
+  t.innerHTML=`<span class="ico">${s.ico}</span><span><div class="t-nom">${s.nombre}</div><div class="t-des">${s.des}</div></span><span class="t-num">${n}</span>`;
+  t.onclick=()=>ir(i);
+  $tabs.appendChild(t);
+
+  const p=document.createElement("div");
+  p.className="panel";
+  p.style.flex=`0 0 ${100/N}%`;
+  let html="";
+  if(s.subir) html+=HTML_SUBIR;
+  if(s.espejo){
+    const ed=cuentaEdit(s.cats), tot=cuenta(s.cats);
+    html+=`<div class="resumen"><b>${ed}</b> de ${tot} con versión editada · los recuadros punteados esperan su edición, en el mismo orden que el original</div>`;
+  }
+  s.cats.forEach(c=>{
+    html+=`<section class="cat"><div class="cat-head"><h2>${c.nombre}</h2><span>${c.items.length}</span><small>${c.drive}</small></div><div class="grid">`;
+    c.items.forEach(it=>{
+      const eds=EDITADAS[it.file];
+      const pend=s.espejo && !eds;
+      const lista=s.espejo && eds;
+      const src= lista ? eds[0].file : SDL+it.file;
+      const media= it.video
+        ? `<video src="${SDL+it.file}#t=1.2" preload="metadata" muted></video><span class="badge vid">VIDEO</span>`
+        : `<img src="${src}" loading="lazy" alt="${it.nombre}">`;
+      let badge="";
+      if(pend) badge=`<span class="badge p">PENDIENTE</span>`;
+      if(lista) badge=`<span class="badge l">${eds.length} VERSIONES</span>`;
+      html+=`<figure class="celda${pend?" pend":""}" data-sec="${s.id}" data-file="${it.file}">
+        <div class="thumb">${media}${badge}</div>
+        <figcaption>${it.nombre}<em>${it.file.split("/").pop().split(".").pop().toUpperCase()}</em></figcaption>
+      </figure>`;
+    });
+    html+=`</div></section>`;
+  });
+  p.innerHTML=html;
+  $track.appendChild(p);
+});
+
+/* buscar item por file */
+function busca(file){
+  for(const grupo of [CATS_IMG,CATS_VID]) for(const c of grupo) for(const it of c.items)
+    if(it.file===file) return {it,c};
+  return null;
+}
+
+/* ══ MODAL ══ */
+const $velo=document.getElementById("velo"), $modal=document.getElementById("modal");
+document.addEventListener("click",e=>{
+  const bor=e.target.closest(".borrar");
+  if(bor){e.stopPropagation();borrarNuevo(+bor.dataset.id);return}
+  const cel=e.target.closest(".celda");
+  if(cel){ cel.dataset.nuevo ? abrirNuevo(+cel.dataset.nuevo) : abrir(cel.dataset.file, cel.dataset.sec); return}
+  if(e.target.id==="velo"||e.target.id==="mx"||e.target.closest("#mx")) cerrar();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape") cerrar();
+  if($velo.classList.contains("abierto")) return;
+  if(e.key==="ArrowRight") ir(Math.min(actual+1,N-1));
+  if(e.key==="ArrowLeft") ir(Math.max(actual-1,0));
+});
+
+function abrir(file, sec){
+  const r=busca(file); if(!r) return;
+  const {it,c}=r;
+  const espejo = sec==="img-flyer"||sec==="vid-flyer";
+  const eds=EDITADAS[file];
+  const nomArchivo=file.split("/").pop();
+  const datos=`
+    <div class="m-datos">
+      <div class="m-dato"><b>Pertenece a</b><span>Solares de Loreto · INM-008</span></div>
+      <div class="m-dato"><b>Ubicación</b><span>Colonia Santa Ana, Sección Loreto, Depto. Candelaria, Misiones</span></div>
+      <div class="m-dato"><b>Proyecto</b><span>20 ha · 20 manzanas · ~170 lotes · lote típico 14×35 m (490 m²) · río Yabebiry</span></div>
+      <div class="m-dato"><b>Origen</b><span>${it.drive}</span></div>
+    </div>`;
+
+  if(espejo && !eds){
+    $modal.innerHTML=`
+      <div class="m-media"><img src="${SDL+file}" style="filter:grayscale(1) brightness(1.1);opacity:.45" alt=""></div>
+      <div class="m-info">
+        <div class="m-cat">${c.nombre} · SIN EDITAR AÚN</div>
+        <div class="m-tit">${it.nombre}</div>
+        <div class="m-desc">Este espacio espera la versión editada y lista para subir de <b>${nomArchivo}</b>. Cuando exista, va a aparecer acá, en el mismo lugar que ocupa el original.</div>
+        ${datos}
+        <div class="m-file">Original: media/${file}</div>
+        <a class="btn-abrir" href="${SDL+file}" target="_blank">Ver el original ↗</a>
+      </div>`;
+  } else if(espejo && eds){
+    $modal.innerHTML=`
+      <div class="m-media"><img src="${eds[0].file}" alt=""></div>
+      <div class="m-info">
+        <div class="m-cat">${c.nombre} · LISTAS PARA SUBIR</div>
+        <div class="m-tit">${it.nombre} · editadas</div>
+        <div class="m-desc">${eds.length} versiones editadas a partir de <b>${nomArchivo}</b>. Tocá cualquiera para descargarla.</div>
+        <div class="versiones">
+          ${eds.map(v=>`<a class="ver" href="${v.file}" download><img src="${v.file}" loading="lazy" alt=""><span>${v.nombre}<i>⬇</i></span></a>`).join("")}
+        </div>
+        ${datos}
+        <a class="btn-dl" href="${eds[0].file}" download>⬇ &nbsp;DESCARGAR PRINCIPAL</a>
+      </div>`;
+  } else {
+    const media= it.video
+      ? `<video src="${SDL+file}" controls autoplay muted></video>`
+      : `<img src="${SDL+file}" alt="">`;
+    $modal.innerHTML=`
+      <div class="m-media">${media}</div>
+      <div class="m-info">
+        <div class="m-cat">${c.nombre}</div>
+        <div class="m-tit">${it.nombre}</div>
+        <div class="m-desc">${it.desc}</div>
+        ${datos}
+        <div class="m-file">Archivo: media/${file}</div>
+        <a class="btn-dl" href="${SDL+file}" download="${nomArchivo}">⬇ &nbsp;DESCARGAR</a>
+        <a class="btn-abrir" href="${SDL+file}" target="_blank">Abrir en pestaña nueva ↗</a>
+      </div>`;
+  }
+  $velo.classList.add("abierto");
+  document.body.style.overflow="hidden";
+}
+function cerrar(){
+  $velo.classList.remove("abierto");
+  $modal.querySelectorAll("video").forEach(v=>v.pause());
+  document.body.style.overflow="";
+}
+
+/* ══ NAVEGACIÓN + animación de entrada ══ */
+function ir(i){
+  actual=i;
+  $track.style.transform=`translateX(-${i*(100/N)}%)`;
+  document.querySelectorAll(".tab").forEach((t,k)=>t.classList.toggle("on",k===i));
+  animaPanel(i);
+}
+function animaPanel(i){
+  const celdas=$track.children[i].querySelectorAll(".celda:not(.vis)");
+  celdas.forEach((c,k)=>setTimeout(()=>c.classList.add("vis"), 40+k*28));
+}
+animaPanel(0);
+
+/* ══════════ SUBIDA DE MATERIAL NUEVO ══════════
+   Guarda los archivos en IndexedDB del dispositivo: siguen ahí al cerrar y
+   volver a abrir la página. Cada archivo se puede descargar y borrar. */
+const DBN="sdl-nuevas";
+let bd=null;
+const urls=new Map();
+
+function abrirBD(){
+  return new Promise((ok,err)=>{
+    const p=indexedDB.open(DBN,1);
+    p.onupgradeneeded=e=>{ if(!e.target.result.objectStoreNames.contains("files")) e.target.result.createObjectStore("files",{keyPath:"id"}); };
+    p.onsuccess=e=>{bd=e.target.result;ok(bd)};
+    p.onerror=()=>err(p.error);
+  });
+}
+const store=m=>bd.transaction("files",m).objectStore("files");
+const pedir=r=>new Promise((ok,err)=>{r.onsuccess=()=>ok(r.result);r.onerror=()=>err(r.error)});
+
+const $inp=document.getElementById("fileInput");
+const $btn=document.getElementById("btnSubir");
+const $uso=document.getElementById("uso");
+const $gi=document.getElementById("gridImg"), $gv=document.getElementById("gridVid");
+
+$btn.onclick=()=>$inp.click();
+$inp.onchange=()=>{ guardar([...$inp.files]); $inp.value=""; };
+
+/* arrastrar y soltar (compu) */
+["dragenter","dragover"].forEach(ev=>$btn.addEventListener(ev,e=>{e.preventDefault();$btn.classList.add("drag")}));
+["dragleave","drop"].forEach(ev=>$btn.addEventListener(ev,e=>{e.preventDefault();$btn.classList.remove("drag")}));
+$btn.addEventListener("drop",e=>{ if(e.dataTransfer?.files?.length) guardar([...e.dataTransfer.files]) });
+
+async function guardar(archivos){
+  const validos=archivos.filter(f=>f.type.startsWith("image/")||f.type.startsWith("video/"));
+  if(!validos.length){ alert("Elegí imágenes o videos."); return }
+  const textoOrig=$btn.innerHTML;
+  $btn.innerHTML=`<span class="flecha">⏳</span> GUARDANDO ${validos.length} ARCHIVO${validos.length>1?"S":""}…`;
+  let seq=0;
+  try{
+    for(const f of validos){
+      await pedir(store("readwrite").add({
+        id:Date.now()*1000+(seq++),
+        nombre:f.name, tipo:f.type, peso:f.size, blob:f,
+        fecha:new Date().toISOString()
+      }));
+    }
+  }catch(err){
+    alert("No se pudo guardar: "+err.message+"\nPuede que no haya espacio en el dispositivo.");
+  }
+  $btn.innerHTML=textoOrig;
+  await pintarNuevas();
+}
+
+async function borrarNuevo(id){
+  if(!confirm("¿Borrar este archivo de la página? El original de tu galería no se toca.")) return;
+  await pedir(store("readwrite").delete(id));
+  cerrar(); await pintarNuevas();
+}
+
+function kb(n){ return n>1048576 ? (n/1048576).toFixed(1)+" MB" : Math.round(n/1024)+" KB" }
+function fechaCorta(iso){ const d=new Date(iso); return d.toLocaleDateString("es-AR")+" "+d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}) }
+
+let NUEVAS=[];
+async function pintarNuevas(){
+  NUEVAS=(await pedir(store("readonly").getAll())).sort((a,b)=>b.id-a.id);
+  NUEVAS.forEach(r=>{ if(!urls.has(r.id)) urls.set(r.id,URL.createObjectURL(r.blob)) });
+
+  const imgs=NUEVAS.filter(r=>r.tipo.startsWith("image/"));
+  const vids=NUEVAS.filter(r=>r.tipo.startsWith("video/"));
+  $gi.innerHTML = imgs.length ? imgs.map(celdaNueva).join("") : `<div class="vacio">Todavía no hay imágenes nuevas.<br>Tocá el botón de arriba para subir.</div>`;
+  $gv.innerHTML = vids.length ? vids.map(celdaNueva).join("") : `<div class="vacio">Todavía no hay videos nuevos.<br>Tocá el botón de arriba para subir.</div>`;
+
+  document.getElementById("cImg").textContent=imgs.length;
+  document.getElementById("cVid").textContent=vids.length;
+  document.getElementById("numNuevas").textContent=NUEVAS.length;
+  const total=NUEVAS.reduce((a,r)=>a+r.peso,0);
+  $uso.textContent = NUEVAS.length ? `${NUEVAS.length} archivos · ${kb(total)}` : "0 archivos";
+
+  setTimeout(()=>document.querySelectorAll(".grid-n .celda:not(.vis)").forEach((c,k)=>setTimeout(()=>c.classList.add("vis"),k*35)),20);
+}
+
+function celdaNueva(r){
+  const u=urls.get(r.id);
+  const media = r.tipo.startsWith("video/")
+    ? `<video src="${u}#t=0.6" preload="metadata" muted></video><span class="badge vid">VIDEO</span>`
+    : `<img src="${u}" loading="lazy" alt="">`;
+  return `<figure class="celda" data-nuevo="${r.id}">
+    <div class="thumb">${media}<button class="borrar" data-id="${r.id}" title="Borrar">✕</button></div>
+    <figcaption>${r.nombre.length>22?r.nombre.slice(0,20)+"…":r.nombre}<em>${kb(r.peso)}</em></figcaption>
+  </figure>`;
+}
+
+function abrirNuevo(id){
+  const r=NUEVAS.find(x=>x.id===id); if(!r) return;
+  const u=urls.get(id);
+  const esVid=r.tipo.startsWith("video/");
+  $modal.innerHTML=`
+    <div class="m-media">${esVid?`<video src="${u}" controls autoplay muted></video>`:`<img src="${u}" alt="">`}</div>
+    <div class="m-info">
+      <div class="m-cat">MATERIAL NUEVO · ${esVid?"VIDEO":"IMAGEN"}</div>
+      <div class="m-tit">${r.nombre}</div>
+      <div class="m-desc">Material nuevo subido a la página. Guardado en este dispositivo, listo para descargar o pasar al Drive.</div>
+      <div class="m-datos">
+        <div class="m-dato"><b>Pertenece a</b><span>Solares de Loreto · INM-008</span></div>
+        <div class="m-dato"><b>Fecha</b><span>${fechaCorta(r.fecha)}</span></div>
+        <div class="m-dato"><b>Archivo</b><span>${r.tipo} · ${kb(r.peso)}</span></div>
+      </div>
+      <a class="btn-dl" href="${u}" download="${r.nombre}">⬇ &nbsp;DESCARGAR</a>
+      <a class="btn-abrir" href="${u}" target="_blank">Abrir en pestaña nueva ↗</a>
+    </div>`;
+  $velo.classList.add("abierto");
+  document.body.style.overflow="hidden";
+}
+
+abrirBD().then(pintarNuevas).catch(e=>{
+  $uso.textContent="Sin almacenamiento";
+  console.warn("IndexedDB no disponible:",e);
+});
+</script>
+</body>
+</html>
