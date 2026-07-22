@@ -323,7 +323,17 @@ const CATS_IMG = [
   { id:"aereas", nombre:"Aéreas del loteo", drive:"Drive · CIA CMD - Solares de Loreto / INM-008",
     items: serie("aerea-loteo-", "aereas-loteo/", 6, "Aérea",
       "Toma aérea de drone de la cuadrícula del loteo: manzanas abiertas, calles de tierra colorada y selva paranaense alrededor. 1280×720, ideal para hero de flyers y reels.",
-      "Drive / INM-008") },
+      "Drive / INM-008").concat([
+      {file:"aereas-loteo/aerea-loteo-07.jpg", nombre:"Aérea 07", desc:"Aérea de la cuadrícula completa con un vehículo dentro del loteo, que da la escala real de las calles.", drive:"WhatsApp 08/07/2026"},
+      {file:"aereas-loteo/aerea-loteo-08-panoramica.jpg", nombre:"Aérea 08 · panorámica", desc:"Vista panorámica con el horizonte: el pinar en hileras, el loteo y la selva paranaense hasta el fondo. La más vendedora del set.", drive:"WhatsApp 08/07/2026"},
+      {file:"aereas-loteo/aerea-loteo-09.jpg", nombre:"Aérea 09", desc:"La traza del loteo vista en diagonal, con el pinar lindero a la izquierda.", drive:"WhatsApp 08/07/2026"},
+      {file:"aereas-loteo/aerea-loteo-10.jpg", nombre:"Aérea 10", desc:"Cuadrícula del loteo desde altura media, con las manzanas bien definidas.", drive:"WhatsApp 08/07/2026"},
+    ]) },
+  { id:"apertura", nombre:"Apertura de calles", drive:"WhatsApp · 08/07/2026",
+    items: [
+      {file:"apertura-calles/motoniveladora-01.jpg", nombre:"Motoniveladora 01", desc:"La motoniveladora abriendo una calle nueva sobre el terreno. Prueba visual de que la obra está en marcha con maquinaria pesada.", drive:"WhatsApp 08/07/2026"},
+      {file:"apertura-calles/motoniveladora-02.jpg", nombre:"Motoniveladora 02", desc:"Otro ángulo de la apertura de calle: se ve el trazado nuevo avanzando sobre el monte.", drive:"WhatsApp 08/07/2026"},
+    ]},
   { id:"mayo", nombre:"Avance de obra · Mayo 2026", drive:"Drive · Imágenes / Avance",
     items: serie("mayo2026-", "avance-mayo2026/", 6, "Avance mayo",
       "Vista aérea del avance de obra a mayo 2026: la cuadrícula con calles ya abiertas, desde distintos ángulos. Muestra el progreso real del loteo. Alta resolución.",
@@ -362,6 +372,27 @@ const CATS_VID = [
       {file:"videos/video-ubicacion-sdl.mp4", nombre:"Video ubicación", desc:"Video de ubicación del loteo: cómo llegar y recorrido de acceso. 33 MB.", drive:"Drive / Videos", video:true},
       {file:"videos/video-primera-etapa.mp4", nombre:"Video primera etapa", desc:"Video de la primera etapa de obra del loteo. 31 MB.", drive:"Drive / Videos", video:true},
     ]},
+  { id:"drone-vid", nombre:"Vuelos de drone · Julio 2026", drive:"WhatsApp · 08/07/2026",
+    items: [
+      ["01", 30, "Sobrevuelo de la cuadrícula del loteo con el pinar lindero."],
+      ["02", 31, "Recorrido aéreo sobre las manzanas abiertas."],
+      ["03", 38, "Vuelo lateral mostrando la traza completa de calles."],
+      ["04", 28, "Toma corta del sector con calles recién compactadas."],
+      ["05", 36, "Sobrevuelo con el monte nativo de fondo."],
+      ["06", 77, "Vuelo largo: recorre el loteo de punta a punta."],
+      ["07", 38, "Aproximación aérea a las manzanas centrales."],
+      ["08-vertical", 23, "Formato vertical, listo para reel o historia sin recortar."],
+      ["09", 128, "El vuelo más completo del set: más de dos minutos sobre todo el predio."],
+      ["10", 63, "Sobrevuelo del sector con el pinar en hileras."],
+      ["11", 43, "Vuelo sobre las calles nuevas y el límite con la selva."],
+      ["12", 60, "Recorrido aéreo del perímetro del loteo."],
+      ["13", 49, "Cierre del vuelo con vista general del predio."],
+    ].map(([n, seg, txt]) => ({
+      file: "videos-drone/drone-loteo-"+n+".mp4",
+      nombre: "Drone "+String(n).replace("-vertical", " vertical"),
+      desc: txt+" Tomado con drone el 08/07/2026. Duración "+seg+" segundos"+(String(n).includes("vertical") ? ", formato vertical 478×850." : ", 848×478."),
+      drive: "WhatsApp 08/07/2026", video: true,
+    })) },
 ];
 
 /* Versiones editadas ya existentes (Fábrica de Flyers CMD) mapeadas a su original */
