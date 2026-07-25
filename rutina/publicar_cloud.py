@@ -117,11 +117,16 @@ def publicar_ig(url, caption):
 
 
 def page_token():
-    r = api_get("me/accounts", {})
-    for pg in r.get("data", []):
-        if str(pg.get("id")) == PAGE_ID:
-            return pg.get("access_token")
-    return None
+    """El token de la Pagina. Si META_TOKEN ya ES un token de Pagina (lo normal:
+    los de Pagina NO vencen), se usa tal cual. Si es de usuario, se deriva."""
+    try:
+        r = api_get("me/accounts", {})
+        for pg in r.get("data", []):
+            if str(pg.get("id")) == PAGE_ID:
+                return pg.get("access_token")
+    except Exception:
+        pass
+    return TOKEN  # ya es de Pagina
 
 
 def publicar_fb(url, caption):
