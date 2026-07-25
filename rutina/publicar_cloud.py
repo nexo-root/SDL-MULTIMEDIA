@@ -37,6 +37,26 @@ ART = timezone(timedelta(hours=-3))   # America/Buenos_Aires
 HERE = os.path.dirname(os.path.abspath(__file__))
 COLA = os.path.join(HERE, "cola.json")
 
+# Avisos al celular de Felipe (topic de ntfy). Va por entorno, NUNCA en el repo publico:
+# si el topic fuera publico cualquiera podria mandarle notificaciones.
+NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "").strip()
+
+
+def avisar(titulo, cuerpo):
+    """Push best-effort al celular. Si falla, no rompe la corrida."""
+    if not NTFY_TOPIC:
+        return
+    try:
+        req = urllib.request.Request(
+            f"https://ntfy.sh/{NTFY_TOPIC}",
+            data=cuerpo.encode("utf-8"),
+            headers={"Title": titulo.encode("ascii", "ignore").decode(),
+                     "Tags": "warning"},
+        )
+        urllib.request.urlopen(req, timeout=15)
+    except Exception:
+        pass
+
 
 def log(msg):
     print(f"[{datetime.now(ART).strftime('%Y-%m-%d %H:%M:%S')}] {msg}", flush=True)
@@ -136,6 +156,9 @@ def main():
         huellas, hubo_hoy = leer_ig(hoy)
     except Exception as e:
         log(f"ERROR leyendo Instagram (token vencido/invalido?): {e}")
+        avisar("Fabrica de Flyers: NO publico",
+               "Meta rechazo el token (vencido o sesion invalidada). Hay que renovarlo. "
+               "El flyer de hoy no se perdio: sale en la proxima corrida.")
         return 2
 
     if hubo_hoy:
@@ -145,6 +168,9 @@ def main():
     idx, pieza = elegir_pieza(seq, huellas)
     if pieza is None:
         log(f"SIN MATERIAL (las {len(seq)} piezas ya se publicaron). La rutina se FRENA - no repite ni inventa.")
+        avisar("Fabrica de Flyers: sin material",
+               f"Ya salieron las {len(seq)} piezas de Solares de Loreto. "
+               "Carga contenido nuevo para que siga publicando.")
         return 0
 
     log(f"Pieza {idx+1}/{len(seq)}: [{pieza['serie']}] {pieza['id']} -> {pieza['file']}")
@@ -168,8 +194,14 @@ def main():
 
     quedan = len(seq) - 1 - idx
     log(f"Resultado: {'OK' if ok else 'FALLO'}. Quedan {quedan} piezas despues de esta.")
+    if not ok:
+        avisar("Fabrica de Flyers: NO publico",
+               f"Fallo la publicacion de {pieza['id']} en IG y FB. "
+               "No se pierde: reintenta en la proxima corrida.")
     if 0 < quedan < 3:
         log(f"AVISO: quedan solo {quedan} piezas. Preparar contenido nuevo.")
+        avisar("Fabrica de Flyers: poca cola",
+               f"Quedan {quedan} flyers de Solares de Loreto. Prepara contenido nuevo.")
     return 0 if ok else 1
 
 
