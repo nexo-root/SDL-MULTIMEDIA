@@ -3,15 +3,19 @@
 Rutina CLOUD de la Fabrica de Flyers CMD - Solares de Loreto.
 
 Corre en la nube de Claude Code (Routines), lunes/miercoles/viernes 10:00 ART.
-NO depende de la PC de Felipe. Publica el flyer que corresponde a HOY segun un
-calendario fijo (la fecha ES la memoria: no necesita estado persistente).
+NO depende de la PC de Felipe ni de estado persistente: la FUENTE DE VERDAD es
+lo que realmente esta publicado en Instagram.
 
 Que hace cada corrida:
-  1. Calcula el indice de hoy: cuantos dias de publicacion (lun/mie/vie) pasaron
-     desde fecha_inicio, + indice_inicio.
-  2. Anti-doble: consulta el ultimo post de IG; si ya publico hoy, no republica.
-  3. Publica la pieza en Instagram (@ciamisionera) + Pagina de Facebook de CMD.
-  4. Si el indice supera la cola -> SE FRENA (no repite, no inventa).
+  1. Si hoy no es lun/mie/vie -> no hace nada.
+  2. Lee los ultimos 50 posts de IG y arma la lista de piezas ya publicadas
+     (comparando una "huella" normalizada del caption).
+  3. Anti-doble: si ya hubo un post HOY, no republica.
+  4. Elige la PRIMERA pieza de la secuencia que todavia no salio -> AUTO-REPARABLE:
+     si una corrida falla (token vencido, caida de Meta), esa pieza NO se pierde,
+     sale en la corrida siguiente.
+  5. Publica en Instagram (@ciamisionera) + Pagina de Facebook de CMD.
+  6. Si ya salieron todas -> SE FRENA (no repite, no inventa).
 
 El token de Meta se pasa por la variable de entorno META_TOKEN (NUNCA en el repo).
 IDs (no secretos) van aca abajo. Solo usa la libreria estandar de Python.
@@ -52,37 +56,37 @@ def api_post(path, params):
         return json.loads(r.read().decode("utf-8"))
 
 
-def indice_de_hoy(cola, hoy):
-    """Cuenta los dias de publicacion (dias_pub) desde fecha_inicio hasta hoy inclusive."""
-    ini = datetime.strptime(cola["fecha_inicio"], "%Y-%m-%d").date()
-    dias_pub = set(cola["dias_pub"])
-    if hoy < ini:
-        return None
-    contados = 0
-    d = ini
-    while d < hoy:
-        if d.weekday() in dias_pub:
-            contados += 1
-        d += timedelta(days=1)
-    # hoy cuenta si es dia de publicacion
-    if hoy.weekday() not in dias_pub:
-        return None
-    return cola["indice_inicio"] + contados
+def _huella(texto):
+    """Normaliza un caption para comparar: sin emojis/simbolos, minusculas, 45 chars."""
+    if not texto:
+        return ""
+    limpio = "".join(c.lower() if (c.isalnum() or c.isspace()) else " " for c in texto)
+    return " ".join(limpio.split())[:45]
 
 
-def ya_publico_hoy(hoy):
-    """True si el ultimo post de IG es de hoy (evita doble publicacion)."""
-    try:
-        r = api_get(f"{IG_USER_ID}/media", {"fields": "timestamp", "limit": 1})
-        d = r.get("data") or []
-        if not d:
-            return False
-        ts = d[0]["timestamp"]  # ej 2026-07-25T13:00:05+0000
-        post_dt = datetime.strptime(ts, "%Y-%m-%dT%H:%M:%S%z").astimezone(ART).date()
-        return post_dt == hoy
-    except Exception as e:
-        log(f"  (no pude chequear ultimo post: {e}) - sigo igual")
-        return False
+def leer_ig(hoy):
+    """Devuelve (huellas_publicadas, hubo_post_hoy). Fuente de verdad = lo que hay en IG."""
+    r = api_get(f"{IG_USER_ID}/media", {"fields": "timestamp,caption", "limit": 50})
+    huellas, hoy_hubo = set(), False
+    for m in r.get("data", []):
+        huellas.add(_huella(m.get("caption")))
+        ts = m.get("timestamp")
+        if ts:
+            try:
+                if datetime.strptime(ts, "%Y-%m-%dT%H:%M:%S%z").astimezone(ART).date() == hoy:
+                    hoy_hubo = True
+            except ValueError:
+                pass
+    return huellas, hoy_hubo
+
+
+def elegir_pieza(seq, huellas_publicadas):
+    """Primera pieza de la secuencia que NO figura publicada en IG. Auto-reparable:
+    si una corrida falla, la pieza NO se pierde — sale en la corrida siguiente."""
+    for i, p in enumerate(seq):
+        if _huella(p["caption"]) not in huellas_publicadas:
+            return i, p
+    return None, None
 
 
 def publicar_ig(url, caption):
@@ -122,20 +126,28 @@ def main():
     hoy = datetime.now(ART).date()
     log(f"Corrida cloud. Hoy = {hoy} ({['Lun','Mar','Mie','Jue','Vie','Sab','Dom'][hoy.weekday()]})")
 
-    idx = indice_de_hoy(cola, hoy)
-    if idx is None:
-        log("Hoy NO es dia de publicacion (o es antes del inicio). No hago nada.")
-        return 0
-    if idx >= len(seq):
-        log(f"SIN MATERIAL (indice {idx} >= {len(seq)}). La rutina se FRENA - no repite ni inventa.")
+    if hoy.weekday() not in set(cola["dias_pub"]):
+        log("Hoy NO es dia de publicacion (lun/mie/vie). No hago nada.")
         return 0
 
-    pieza = seq[idx]
-    log(f"Indice {idx}/{len(seq)-1}: [{pieza['serie']}] {pieza['id']} -> {pieza['file']}")
+    # Fuente de verdad: lo que REALMENTE esta publicado en IG (no un contador de fechas).
+    # Asi, si una corrida falla, la pieza no se pierde: sale en la siguiente.
+    try:
+        huellas, hubo_hoy = leer_ig(hoy)
+    except Exception as e:
+        log(f"ERROR leyendo Instagram (token vencido/invalido?): {e}")
+        return 2
 
-    if ya_publico_hoy(hoy):
+    if hubo_hoy:
         log("Ya hay un post de HOY en IG. No republico (anti-doble).")
         return 0
+
+    idx, pieza = elegir_pieza(seq, huellas)
+    if pieza is None:
+        log(f"SIN MATERIAL (las {len(seq)} piezas ya se publicaron). La rutina se FRENA - no repite ni inventa.")
+        return 0
+
+    log(f"Pieza {idx+1}/{len(seq)}: [{pieza['serie']}] {pieza['id']} -> {pieza['file']}")
 
     url = cola["base_url"] + pieza["file"]
     caption = pieza["caption"]
