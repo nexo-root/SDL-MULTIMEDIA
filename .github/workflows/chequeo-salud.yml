@@ -1,0 +1,35 @@
+name: Chequeo de salud (Fabrica de Flyers)
+
+# Corre TODOS LOS DIAS a las 09:00 ART (12:00 UTC), una hora antes de publicar.
+# NO publica nada: solo verifica que el token, Instagram, la Pagina, la cola de
+# flyers y la imagen del proximo flyer esten en condiciones. Si algo esta mal,
+# avisa al celular de Felipe por ntfy.
+
+on:
+  schedule:
+    - cron: '0 12 * * *'   # todos los dias 12:00 UTC = 09:00 ART
+  workflow_dispatch:
+
+concurrency:
+  group: chequeo-salud
+  cancel-in-progress: false
+
+jobs:
+  chequear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Traer el repo
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Revisar que todo este sano
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python rutina/chequeo_salud.py

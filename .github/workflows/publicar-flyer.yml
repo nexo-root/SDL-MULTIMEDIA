@@ -1,0 +1,55 @@
+name: Publicar flyer (Solares de Loreto)
+
+# Fabrica de Flyers CMD — publica en Instagram (@ciamisionera) y en la Pagina de
+# Facebook de CMD, lunes / miercoles / viernes a las 10:00 ART (13:00 UTC).
+#
+# Corre en los servidores de GitHub: NO depende de la PC de Felipe ni de la
+# politica de red del entorno de Claude. Los runners de GitHub tienen salida
+# libre a internet, que es justo lo que el script necesita (graph.facebook.com,
+# ntfy.sh y las imagenes de GitHub Pages).
+#
+# Los secretos (META_TOKEN, NTFY_TOPIC) viven en:
+#   Settings -> Secrets and variables -> Actions -> Repository secrets
+# NUNCA en el repo.
+
+on:
+  schedule:
+    - cron: '0 13 * * 1,3,5'   # lun/mie/vie 13:00 UTC = 10:00 ART
+  workflow_dispatch:            # boton para correrlo a mano cuando haga falta
+
+# Evita que dos corridas se pisen y publiquen dos veces
+concurrency:
+  group: publicar-flyer
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Traer el repo
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Publicar el flyer que corresponde hoy
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python rutina/publicar_cloud.py
+
+      - name: Avisar al celular si la corrida fallo
+        if: failure()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          if [ -n "$NTFY_TOPIC" ]; then
+            curl -s -H "Title: Fabrica de Flyers: fallo la corrida" \
+                 -H "Tags: warning" \
+                 -d "El workflow de GitHub fallo. El flyer NO se pierde: sale en la proxima corrida. Revisar en GitHub > Actions." \
+                 "https://ntfy.sh/$NTFY_TOPIC" || true
+          fi
