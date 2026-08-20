@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Activos CMD - Compania Misionera de Desarrollo</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--monte:#1B5E20;--monte-dk:#123D16;--tierra:#A64B28;--crema:#F4EFE3;--madera:#7B5333;--oro:#D4AF37;--tinta:#1a1a17}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--crema);color:var(--tinta);font-family:Montserrat,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{background:var(--monte-dk);color:var(--crema);padding:44px 0 38px;margin-bottom:34px}
+header.top h1{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:clamp(1.9rem,1.2rem + 2.6vw,2.8rem);line-height:1.1;margin-top:20px}
+header.top .sub{opacity:.82;margin-top:12px;font-size:.95rem;max-width:62ch}
+.marca{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;letter-spacing:.02em}
+.regla{height:3px;width:74px;background:var(--tierra);margin-top:18px}
+.resumen{display:flex;gap:28px;flex-wrap:wrap;margin-top:26px;font-size:.84rem}
+.resumen b{display:block;font-family:'Playfair Display',Georgia,serif;font-size:1.7rem;font-weight:600;color:var(--oro)}
+.grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));padding-bottom:60px}
+.activo{background:#fff;border:1px solid rgba(123,83,51,.2);border-radius:10px;padding:22px;display:flex;flex-direction:column}
+.activo header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.tipo{font-size:.68rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--tierra)}
+.ref{font-size:.68rem;color:var(--madera);opacity:.7}
+.activo h2{font-family:'Playfair Display',Georgia,serif;font-size:1.32rem;font-weight:600;color:var(--monte-dk);line-height:1.22}
+.lugar{font-size:.85rem;color:var(--madera);margin-top:5px}
+.datos{display:flex;gap:26px;margin:16px 0 12px;padding:13px 0;border-top:1px solid rgba(123,83,51,.16);border-bottom:1px solid rgba(123,83,51,.16)}
+dt{font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--madera);margin-bottom:3px}
+dd{font-size:.95rem;font-weight:600}
+.precio{color:var(--monte);font-size:1.06rem}
+.det{font-size:.87rem;color:#4a4a44;margin-bottom:14px}
+.fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px}
+.fotos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:5px;cursor:zoom-in;transition:opacity .2s}
+.fotos img:hover{opacity:.85}
+.sinfoto{grid-column:1/-1;padding:26px;text-align:center;font-size:.82rem;color:var(--madera);background:rgba(123,83,51,.06);border-radius:5px}
+.acciones{display:flex;gap:9px;margin-top:auto}
+.btn{flex:1;text-align:center;padding:11px;border-radius:5px;font-size:.76rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;background:var(--monte);color:var(--crema);transition:background .2s}
+.btn:hover{background:var(--monte-dk)}
+.btn.ghost{background:transparent;color:var(--monte);border:1px solid rgba(27,94,32,.35)}
+.btn.ghost:hover{background:rgba(27,94,32,.07)}
+#lb{display:none;position:fixed;inset:0;background:rgba(10,16,10,.94);z-index:99;align-items:center;justify-content:center;cursor:zoom-out;padding:24px}
+#lb img{max-width:100%;max-height:100%;border-radius:6px}
+footer{background:var(--monte-dk);color:var(--crema);padding:26px 0;font-size:.8rem;opacity:.92}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.datos{gap:18px}}
+</style></head><body>
+
+<header class="top"><div class="wrap">
+  <div class="marca">CMD</div>
+  <div class="regla"></div>
+  <h1>Activos disponibles</h1>
+  <p class="sub">Inventario de la Compa&ntilde;&iacute;a Misionera de Desarrollo. Terrenos, lotes, departamentos y hect&aacute;reas en Misiones y Corrientes. Todos de propiedad directa, sin comisiones de intermediarios.</p>
+  <div class="resumen">
+    <div><b>10</b>activos</div>
+    <div><b>38</b>fotos</div>
+    <div><b>4</b>localidades</div>
+  </div>
+</div></header>
+
+<div class="wrap"><div class="grid">
+    <article class="activo">
+      <header><span class="tipo">Departamento</span><span class="ref">INM-001</span></header>
+      <h2>Depto 1 dorm · Torre Aymará</h2>
+      <p class="lugar">Posadas · Beethoven 1650</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">USD 66.000</dd></div>
+        <div><dt>Superficie</dt><dd>69 m² totales</dd></div>
+      </div>
+      <p class="det">Un dormitorio con balcón. Dos unidades disponibles: pisos 7 y 13.</p>
+      <div class="fotos"><img src="media/activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-01.jpg" alt="Depto 1 dorm · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-02.jpg" alt="Depto 1 dorm · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-03.jpg" alt="Depto 1 dorm · Torre Aymará" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Depto%201%20dorm%20·%20Torre%20Aymará%20(INM-001)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/Beethoven+1650+Posadas+Misiones">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Terreno</span><span class="ref">INM-002</span></header>
+      <h2>Terreno Río Paraná</h2>
+      <p class="lugar">Oberá · Río Paraná casi Dinamarca</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">USD 50.000</dd></div>
+        <div><dt>Superficie</dt><dd>12 × 50 m</dd></div>
+      </div>
+      <p class="det">Un lote.</p>
+      <div class="fotos"><img src="media/activos/INM-002-terreno-rio-parana-obera/INM-002-01.jpg" alt="Terreno Río Paraná" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-002-terreno-rio-parana-obera/INM-002-02.jpg" alt="Terreno Río Paraná" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-002-terreno-rio-parana-obera/INM-002-03.jpg" alt="Terreno Río Paraná" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-002-terreno-rio-parana-obera/INM-002-04.jpg" alt="Terreno Río Paraná" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Terreno%20Río%20Paraná%20(INM-002)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/Rio+Parana+184+Obera+Misiones">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Lotes</span><span class="ref">INM-003</span></header>
+      <h2>Lotes zona Aeródromo</h2>
+      <p class="lugar">Oberá · Zona aeródromo</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">USD 25.000 c/u</dd></div>
+        <div><dt>Superficie</dt><dd>12,5 × 32,5 m</dd></div>
+      </div>
+      <p class="det">Dos lotes disponibles. Precio por unidad.</p>
+      <div class="fotos"><img src="media/activos/INM-003-lotes-zona-aerodromo-obera/INM-003-01.jpg" alt="Lotes zona Aeródromo" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-003-lotes-zona-aerodromo-obera/INM-003-02.jpg" alt="Lotes zona Aeródromo" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Lotes%20zona%20Aeródromo%20(INM-003)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/-27.510031+-55.128476">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Lotes</span><span class="ref">INM-004</span></header>
+      <h2>Lotes zona Colectora</h2>
+      <p class="lugar">Oberá · casi Picada Sarmiento</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">USD 25.000 c/u</dd></div>
+        <div><dt>Superficie</dt><dd>12,5 × 37,5 m</dd></div>
+      </div>
+      <p class="det">Dos lotes disponibles. Precio por unidad.</p>
+      <div class="fotos"><img src="media/activos/INM-004-lotes-zona-colectora-obera/INM-004-01.jpg" alt="Lotes zona Colectora" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-004-lotes-zona-colectora-obera/INM-004-02.jpg" alt="Lotes zona Colectora" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-004-lotes-zona-colectora-obera/INM-004-03.jpg" alt="Lotes zona Colectora" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Lotes%20zona%20Colectora%20(INM-004)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/-27.498411+-55.159192">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Hectáreas</span><span class="ref">INM-005</span></header>
+      <h2>Hectáreas Ruta 117</h2>
+      <p class="lugar">Paso de los Libres · Corrientes</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">Consultar</dd></div>
+        <div><dt>Superficie</dt><dd>2 hectáreas</dd></div>
+      </div>
+      <p class="det">Sobre la entrada, con frente a ruta.</p>
+      <div class="fotos"><img src="media/activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-01.jpg" alt="Hectáreas Ruta 117" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-02.jpg" alt="Hectáreas Ruta 117" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-03.jpg" alt="Hectáreas Ruta 117" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-04.jpg" alt="Hectáreas Ruta 117" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-05.jpg" alt="Hectáreas Ruta 117" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-06.jpg" alt="Hectáreas Ruta 117" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Hectáreas%20Ruta%20117%20(INM-005)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/-29.720414+-57.129831">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Hectáreas</span><span class="ref">INM-006</span></header>
+      <h2>Hectáreas Ruta 14</h2>
+      <p class="lugar">San José · Ruta 14</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">Consultar</dd></div>
+        <div><dt>Superficie</dt><dd>1,5 hectáreas</dd></div>
+      </div>
+      <p class="det">Sobre la entrada a Misiones.</p>
+      <div class="fotos"><img src="media/activos/INM-006-hectareas-ruta-14-san-jose/INM-006-01.jpg" alt="Hectáreas Ruta 14" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-006-hectareas-ruta-14-san-jose/INM-006-02.jpg" alt="Hectáreas Ruta 14" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-006-hectareas-ruta-14-san-jose/INM-006-03.jpg" alt="Hectáreas Ruta 14" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Hectáreas%20Ruta%2014%20(INM-006)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/-27.756179+-55.785415">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Departamento</span><span class="ref">INM-007</span></header>
+      <h2>Depto 2 dorm unificado · Torre Aymará</h2>
+      <p class="lugar">Posadas · Beethoven 1650</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">Consultar</dd></div>
+        <div><dt>Superficie</dt><dd>A confirmar</dd></div>
+      </div>
+      <p class="det">Piso del costado unificado. Dos dormitorios, dos balcones.</p>
+      <div class="fotos"><div class="sinfoto">Sin fotos cargadas</div></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Depto%202%20dorm%20unificado%20·%20Torre%20Aymará%20(INM-007)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/Beethoven+1650+Posadas+Misiones">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Loteo</span><span class="ref">INM-008</span></header>
+      <h2>Solares de Loreto</h2>
+      <p class="lugar">Loreto · Candelaria</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">Desde USD 8.000</dd></div>
+        <div><dt>Superficie</dt><dd>490 a 1.250 m²</dd></div>
+      </div>
+      <p class="det">Loteo turístico-residencial propio. Financiación en cuotas fijas.</p>
+      <div class="fotos"><img src="media/activos/INM-008-solares-de-loreto/INM-008-01.jpg" alt="Solares de Loreto" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-008-solares-de-loreto/INM-008-02.jpg" alt="Solares de Loreto" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-008-solares-de-loreto/INM-008-03.jpg" alt="Solares de Loreto" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-008-solares-de-loreto/INM-008-04.jpg" alt="Solares de Loreto" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-008-solares-de-loreto/INM-008-05.jpg" alt="Solares de Loreto" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-008-solares-de-loreto/INM-008-06.jpg" alt="Solares de Loreto" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Solares%20de%20Loreto%20(INM-008)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://maps.app.goo.gl/y89b4WNgwMbJJZAZ7">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Terraza</span><span class="ref">INM-009</span></header>
+      <h2>Terraza rooftop · Torre Aymará</h2>
+      <p class="lugar">Posadas · Beethoven 1650</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">Consultar</dd></div>
+        <div><dt>Superficie</dt><dd>630 m²</dd></div>
+      </div>
+      <p class="det">Terraza rooftop con vista.</p>
+      <div class="fotos"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-01.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-02.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-03.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-04.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-05.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-06.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-07.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-08.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-009-terraza-rooftop-aymara/INM-009-09.jpg" alt="Terraza rooftop · Torre Aymará" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Terraza%20rooftop%20·%20Torre%20Aymará%20(INM-009)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/Beethoven+1650+Posadas+Misiones">Ver en el mapa</a>
+      </div>
+    </article>
+    <article class="activo">
+      <header><span class="tipo">Local comercial</span><span class="ref">INM-010</span></header>
+      <h2>Local planta baja · Torre Aymará</h2>
+      <p class="lugar">Posadas · Beethoven 1650</p>
+      <div class="datos">
+        <div><dt>Precio</dt><dd class="precio">Consultar</dd></div>
+        <div><dt>Superficie</dt><dd>30 m²</dd></div>
+      </div>
+      <p class="det">Local a la calle en planta baja.</p>
+      <div class="fotos"><img src="media/activos/INM-010-local-pb-aymara/INM-010-01.jpg" alt="Local planta baja · Torre Aymará" loading="lazy" onclick="abrir(this.src)"><img src="media/activos/INM-010-local-pb-aymara/INM-010-02.jpg" alt="Local planta baja · Torre Aymará" loading="lazy" onclick="abrir(this.src)"></div>
+      <div class="acciones">
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/5493764199878?text=Hola,%20quiero%20informacion%20sobre:%20Local%20planta%20baja%20·%20Torre%20Aymará%20(INM-010)">Consultar</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/Beethoven+1650+Posadas+Misiones">Ver en el mapa</a>
+      </div>
+    </article></div></div>
+
+<footer><div class="wrap">
+  Compa&ntilde;&iacute;a Misionera de Desarrollo &middot; Posadas, Misiones &middot; Consultas: 3764 199878<br>
+  <span style="opacity:.6">Uso interno y comercial. Precios sujetos a confirmaci&oacute;n.</span>
+</div></footer>
+
+<div id="lb" onclick="this.style.display='none'"><img id="lbimg" alt=""></div>
+<script>
+function abrir(src){document.getElementById('lbimg').src=src;document.getElementById('lb').style.display='flex';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.getElementById('lb').style.display='none';}});
+</script>
+</body></html>
