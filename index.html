@@ -275,6 +275,18 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
   .m-x{width:32px;height:32px;top:10px;right:10px;font-size:.9rem}
   .ver span{font-size:.66rem;padding:6px 8px}
 }
+
+.proy{display:flex;align-items:center;gap:14px;margin:38px 0 6px}
+.proy:first-child{margin-top:8px}
+.proy h3{font-family:inherit;font-size:1.32rem;font-weight:800;letter-spacing:-.01em;color:var(--tinta);white-space:nowrap}
+.proy-n{font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;background:var(--aqua-fuerte);color:#fff}
+.proy-lin{height:2px;flex:0 0 26px;background:var(--aqua-fuerte);border-radius:2px}
+.proy-lin.f{flex:1 1 auto;opacity:.22}
+@media(max-width:700px){.proy{gap:9px;margin:26px 0 4px}.proy h3{font-size:1.05rem}.proy-lin{flex-basis:14px}}
+
+.sel-activo{display:block;font-size:.74rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--tinta-suave);margin-bottom:10px}
+.sel-activo select{display:block;width:100%;margin-top:7px;padding:12px 13px;border-radius:11px;border:2px solid var(--aqua-fuerte);background:#fff;font:inherit;font-size:.92rem;font-weight:600;color:var(--tinta);text-transform:none;letter-spacing:0;cursor:pointer}
+.sel-activo select:focus{outline:3px solid rgba(60,207,255,.35)}
 </style>
 </head>
 <body>
@@ -321,7 +333,7 @@ function serie(pref, carpeta, n, nom, desc, drive, ext){
 }
 
 const CATS_IMG = [
-  { id:"aereas", nombre:"Aéreas del loteo", drive:"Drive · CIA CMD - Solares de Loreto / INM-008",
+  { id:"aereas", proy:"Solares de Loreto", nombre:"Aéreas del loteo", drive:"Drive · CIA CMD - Solares de Loreto / INM-008",
     items: serie("aerea-loteo-", "aereas-loteo/", 6, "Aérea",
       "Toma aérea de drone de la cuadrícula del loteo: manzanas abiertas, calles de tierra colorada y selva paranaense alrededor. 1280×720, ideal para hero de flyers y reels.",
       "Drive / INM-008").concat([
@@ -330,16 +342,16 @@ const CATS_IMG = [
       {file:"aereas-loteo/aerea-loteo-09.jpg", nombre:"Aérea 09", desc:"La traza del loteo vista en diagonal, con el pinar lindero a la izquierda.", drive:"WhatsApp 08/07/2026"},
       {file:"aereas-loteo/aerea-loteo-10.jpg", nombre:"Aérea 10", desc:"Cuadrícula del loteo desde altura media, con las manzanas bien definidas.", drive:"WhatsApp 08/07/2026"},
     ]) },
-  { id:"apertura", nombre:"Apertura de calles", drive:"WhatsApp · 08/07/2026",
+  { id:"apertura", proy:"Solares de Loreto", nombre:"Apertura de calles", drive:"WhatsApp · 08/07/2026",
     items: [
       {file:"apertura-calles/motoniveladora-01.jpg", nombre:"Motoniveladora 01", desc:"La motoniveladora abriendo una calle nueva sobre el terreno. Prueba visual de que la obra está en marcha con maquinaria pesada.", drive:"WhatsApp 08/07/2026"},
       {file:"apertura-calles/motoniveladora-02.jpg", nombre:"Motoniveladora 02", desc:"Otro ángulo de la apertura de calle: se ve el trazado nuevo avanzando sobre el monte.", drive:"WhatsApp 08/07/2026"},
     ]},
-  { id:"mayo", nombre:"Avance de obra · Mayo 2026", drive:"Drive · Imágenes / Avance",
+  { id:"mayo", proy:"Solares de Loreto", nombre:"Avance de obra · Mayo 2026", drive:"Drive · Imágenes / Avance",
     items: serie("mayo2026-", "avance-mayo2026/", 6, "Avance mayo",
       "Vista aérea del avance de obra a mayo 2026: la cuadrícula con calles ya abiertas, desde distintos ángulos. Muestra el progreso real del loteo. Alta resolución.",
       "Drive / Imágenes / Avance mayo 2026") },
-  { id:"entorno", nombre:"Entorno de Loreto", drive:"Drive · Imágenes / Entorno",
+  { id:"entorno", proy:"Solares de Loreto", nombre:"Entorno de Loreto", drive:"Drive · Imágenes / Entorno",
     items: [
       {file:"entorno-loreto/naturaleza-loreto01.jpg", nombre:"Naturaleza 01", desc:"Selva y vegetación del entorno inmediato del loteo.", drive:"Drive / Imágenes / Entorno"},
       {file:"entorno-loreto/naturaleza-loreto02-arroyo-yabebiri.jpg", nombre:"Arroyo Yabebiry 02", desc:"El arroyo Yabebiry, el gran diferencial natural del loteo: acceso al río y muelle privado en el master plan.", drive:"Drive / Imágenes / Entorno"},
@@ -351,7 +363,7 @@ const CATS_IMG = [
       {file:"entorno-loreto/iglesia-loreto.jpg", nombre:"Iglesia de Loreto", desc:"La iglesia del pueblo de Loreto, parte del entorno histórico del proyecto.", drive:"Drive / Imágenes / Entorno"},
       {file:"entorno-loreto/hombres-plano.jpg", nombre:"Equipo con plano", desc:"El equipo revisando el plano del loteo en el terreno.", drive:"Drive / Imágenes / Entorno"},
     ]},
-  { id:"drone", nombre:"Loteo · Drone y mantenimiento", drive:"Drive · Imágenes / Drone",
+  { id:"drone", proy:"Solares de Loreto", nombre:"Loteo · Drone y mantenimiento", drive:"Drive · Imágenes / Drone",
     items: [
       {file:"loteo-drone/drone-01-SDL.jpg", nombre:"Drone 01", desc:"Toma de drone del predio completo. Archivo de máxima resolución (3.4 MB).", drive:"Drive / Imágenes / Drone"},
       {file:"loteo-drone/drone-02-SDL.jpg", nombre:"Drone 02", desc:"Toma de drone del loteo y su entorno de selva.", drive:"Drive / Imágenes / Drone"},
@@ -361,36 +373,36 @@ const CATS_IMG = [
       {file:"loteo-drone/kml-celular-aereo-SDL.png", nombre:"KML georreferencia 01", desc:"Captura satelital con la georreferencia KML del loteo sobre el mapa real.", drive:"Drive / Imágenes / Drone"},
       {file:"loteo-drone/kml-celular-aereo2-SDL.png", nombre:"KML georreferencia 02", desc:"Segunda captura satelital con el polígono KML del predio.", drive:"Drive / Imágenes / Drone"},
     ]},
-  { id:"logo", nombre:"Marca", drive:"Drive · Imágenes / Logo",
+  { id:"logo", proy:"Marca CMD", nombre:"Marca", drive:"Drive · Imágenes / Logo",
     items: [
       {file:"logo/logo-SDL.png", nombre:"Logo SDL", desc:"Logo oficial de Solares de Loreto en PNG con fondo transparente. Usar en flyers, videos y documentos.", drive:"Drive / Imágenes / Logo"},
     ]},
   /* === ACTIVOS CMD (generado por rutina/_inyectar_activos.py) === */
-  { id:"inm-001", nombre:"INM-001 · Depto 1 dorm · Torre Aymará", drive:"Posadas · Beethoven 1650",
+  { id:"inm-001", proy:"Torre Aymará", nombre:"INM-001 · Depto 1 dorm · Torre Aymará", drive:"Posadas · Beethoven 1650",
     items: [
       {file:"activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-01.jpg", nombre:"Depto 1 dorm · Torre Aymará 01", desc:"USD 66.000 · 69 m² · un dormitorio con balcón. Dos unidades: pisos 7 y 13.", drive:"Drive · Cia. MD - Activos / INM-001"},
       {file:"activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-02.jpg", nombre:"Depto 1 dorm · Torre Aymará 02", desc:"USD 66.000 · 69 m² · un dormitorio con balcón. Dos unidades: pisos 7 y 13.", drive:"Drive · Cia. MD - Activos / INM-001"},
       {file:"activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-03.jpg", nombre:"Depto 1 dorm · Torre Aymará 03", desc:"USD 66.000 · 69 m² · un dormitorio con balcón. Dos unidades: pisos 7 y 13.", drive:"Drive · Cia. MD - Activos / INM-001"}
     ] },
-  { id:"inm-002", nombre:"INM-002 · Terreno Río Paraná", drive:"Oberá · casi Dinamarca",
+  { id:"inm-002", proy:"Oberá", nombre:"INM-002 · Terreno Río Paraná", drive:"Oberá · casi Dinamarca",
     items: [
       {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-01.jpg", nombre:"Terreno Río Paraná 01", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Drive · Cia. MD - Activos / INM-002"},
       {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-02.jpg", nombre:"Terreno Río Paraná 02", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Drive · Cia. MD - Activos / INM-002"},
       {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-03.jpg", nombre:"Terreno Río Paraná 03", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Drive · Cia. MD - Activos / INM-002"},
       {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-04.jpg", nombre:"Terreno Río Paraná 04", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Drive · Cia. MD - Activos / INM-002"}
     ] },
-  { id:"inm-003", nombre:"INM-003 · Lotes zona Aeródromo", drive:"Oberá",
+  { id:"inm-003", proy:"Oberá", nombre:"INM-003 · Lotes zona Aeródromo", drive:"Oberá",
     items: [
       {file:"activos/INM-003-lotes-zona-aerodromo-obera/INM-003-01.jpg", nombre:"Lotes zona Aeródromo 01", desc:"USD 25.000 c/u · 12,5 × 32,5 m · dos lotes disponibles.", drive:"Drive · Cia. MD - Activos / INM-003"},
       {file:"activos/INM-003-lotes-zona-aerodromo-obera/INM-003-02.jpg", nombre:"Lotes zona Aeródromo 02", desc:"USD 25.000 c/u · 12,5 × 32,5 m · dos lotes disponibles.", drive:"Drive · Cia. MD - Activos / INM-003"}
     ] },
-  { id:"inm-004", nombre:"INM-004 · Lotes zona Colectora", drive:"Oberá · casi Picada Sarmiento",
+  { id:"inm-004", proy:"Oberá", nombre:"INM-004 · Lotes zona Colectora", drive:"Oberá · casi Picada Sarmiento",
     items: [
       {file:"activos/INM-004-lotes-zona-colectora-obera/INM-004-01.jpg", nombre:"Lotes zona Colectora 01", desc:"USD 25.000 c/u · 12,5 × 37,5 m · dos lotes disponibles.", drive:"Drive · Cia. MD - Activos / INM-004"},
       {file:"activos/INM-004-lotes-zona-colectora-obera/INM-004-02.jpg", nombre:"Lotes zona Colectora 02", desc:"USD 25.000 c/u · 12,5 × 37,5 m · dos lotes disponibles.", drive:"Drive · Cia. MD - Activos / INM-004"},
       {file:"activos/INM-004-lotes-zona-colectora-obera/INM-004-03.jpg", nombre:"Lotes zona Colectora 03", desc:"USD 25.000 c/u · 12,5 × 37,5 m · dos lotes disponibles.", drive:"Drive · Cia. MD - Activos / INM-004"}
     ] },
-  { id:"inm-005", nombre:"INM-005 · Hectáreas Ruta 117", drive:"Paso de los Libres · Corrientes",
+  { id:"inm-005", proy:"Campos y hectáreas", nombre:"INM-005 · Hectáreas Ruta 117", drive:"Paso de los Libres · Corrientes",
     items: [
       {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-01.jpg", nombre:"Hectáreas Ruta 117 01", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Drive · Cia. MD - Activos / INM-005"},
       {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-02.jpg", nombre:"Hectáreas Ruta 117 02", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Drive · Cia. MD - Activos / INM-005"},
@@ -399,13 +411,13 @@ const CATS_IMG = [
       {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-05.jpg", nombre:"Hectáreas Ruta 117 05", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Drive · Cia. MD - Activos / INM-005"},
       {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-06.jpg", nombre:"Hectáreas Ruta 117 06", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Drive · Cia. MD - Activos / INM-005"}
     ] },
-  { id:"inm-006", nombre:"INM-006 · Hectáreas Ruta 14", drive:"San José · entrada a Misiones",
+  { id:"inm-006", proy:"Campos y hectáreas", nombre:"INM-006 · Hectáreas Ruta 14", drive:"San José · entrada a Misiones",
     items: [
       {file:"activos/INM-006-hectareas-ruta-14-san-jose/INM-006-01.jpg", nombre:"Hectáreas Ruta 14 01", desc:"Precio a confirmar · 1,5 hectáreas.", drive:"Drive · Cia. MD - Activos / INM-006"},
       {file:"activos/INM-006-hectareas-ruta-14-san-jose/INM-006-02.jpg", nombre:"Hectáreas Ruta 14 02", desc:"Precio a confirmar · 1,5 hectáreas.", drive:"Drive · Cia. MD - Activos / INM-006"},
       {file:"activos/INM-006-hectareas-ruta-14-san-jose/INM-006-03.jpg", nombre:"Hectáreas Ruta 14 03", desc:"Precio a confirmar · 1,5 hectáreas.", drive:"Drive · Cia. MD - Activos / INM-006"}
     ] },
-  { id:"inm-008", nombre:"INM-008 · Solares de Loreto · el loteo", drive:"Loreto · Candelaria",
+  { id:"inm-008", proy:"Solares de Loreto", nombre:"INM-008 · Solares de Loreto · el loteo", drive:"Loreto · Candelaria",
     items: [
       {file:"activos/INM-008-solares-de-loreto/INM-008-01.jpg", nombre:"Solares de Loreto · el loteo 01", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Drive · Cia. MD - Activos / INM-008"},
       {file:"activos/INM-008-solares-de-loreto/INM-008-02.jpg", nombre:"Solares de Loreto · el loteo 02", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Drive · Cia. MD - Activos / INM-008"},
@@ -414,7 +426,7 @@ const CATS_IMG = [
       {file:"activos/INM-008-solares-de-loreto/INM-008-05.jpg", nombre:"Solares de Loreto · el loteo 05", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Drive · Cia. MD - Activos / INM-008"},
       {file:"activos/INM-008-solares-de-loreto/INM-008-06.jpg", nombre:"Solares de Loreto · el loteo 06", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Drive · Cia. MD - Activos / INM-008"}
     ] },
-  { id:"inm-009", nombre:"INM-009 · Terraza rooftop Aymará", drive:"Posadas · Beethoven 1650",
+  { id:"inm-009", proy:"Torre Aymará", nombre:"INM-009 · Terraza rooftop Aymará", drive:"Posadas · Beethoven 1650",
     items: [
       {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-01.jpg", nombre:"Terraza rooftop Aymará 01", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Drive · Cia. MD - Activos / INM-009"},
       {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-02.jpg", nombre:"Terraza rooftop Aymará 02", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Drive · Cia. MD - Activos / INM-009"},
@@ -426,7 +438,7 @@ const CATS_IMG = [
       {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-08.jpg", nombre:"Terraza rooftop Aymará 08", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Drive · Cia. MD - Activos / INM-009"},
       {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-09.jpg", nombre:"Terraza rooftop Aymará 09", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Drive · Cia. MD - Activos / INM-009"}
     ] },
-  { id:"inm-010", nombre:"INM-010 · Local planta baja Aymará", drive:"Posadas · Beethoven 1650",
+  { id:"inm-010", proy:"Torre Aymará", nombre:"INM-010 · Local planta baja Aymará", drive:"Posadas · Beethoven 1650",
     items: [
       {file:"activos/INM-010-local-pb-aymara/INM-010-01.jpg", nombre:"Local planta baja Aymará 01", desc:"Precio a confirmar · 30 m² a la calle.", drive:"Drive · Cia. MD - Activos / INM-010"},
       {file:"activos/INM-010-local-pb-aymara/INM-010-02.jpg", nombre:"Local planta baja Aymará 02", desc:"Precio a confirmar · 30 m² a la calle.", drive:"Drive · Cia. MD - Activos / INM-010"}
@@ -435,12 +447,12 @@ const CATS_IMG = [
 ];
 
 const CATS_VID = [
-  { id:"videos", nombre:"Videos del proyecto", drive:"Drive · CIA CMD - Solares de Loreto / Videos",
+  { id:"videos", proy:"Solares de Loreto", nombre:"Videos del proyecto", drive:"Drive · CIA CMD - Solares de Loreto / Videos",
     items: [
       {file:"videos/video-ubicacion-sdl.mp4", nombre:"Video ubicación", desc:"Video de ubicación del loteo: cómo llegar y recorrido de acceso. 33 MB.", drive:"Drive / Videos", video:true},
       {file:"videos/video-primera-etapa.mp4", nombre:"Video primera etapa", desc:"Video de la primera etapa de obra del loteo. 31 MB.", drive:"Drive / Videos", video:true},
     ]},
-  { id:"drone-vid", nombre:"Vuelos de drone · Julio 2026", drive:"WhatsApp · 08/07/2026",
+  { id:"drone-vid", proy:"Solares de Loreto", nombre:"Vuelos de drone · Julio 2026", drive:"WhatsApp · 08/07/2026",
     items: [
       ["01", 30, "Sobrevuelo de la cuadrícula del loteo con el pinar lindero."],
       ["02", 31, "Recorrido aéreo sobre las manzanas abiertas."],
@@ -502,20 +514,34 @@ const EDITADAS = {
   "loteo-drone/tractor-mantenimiento.jpg": [{file:FLY+"ed-tractor-mantenimiento.jpg", nombre:"Editorial · Desde el aire"}],
 };
 
+
+const ACTIVOS_SEL = [
+  {g:"Solares de Loreto", ops:[["INM-008","Solares de Loreto · el loteo"]]},
+  {g:"Torre Aymará", ops:[["INM-001","Depto 1 dorm"],["INM-007","Depto 2 dorm unificado"],["INM-009","Terraza rooftop"],["INM-010","Local planta baja"]]},
+  {g:"Oberá", ops:[["INM-002","Terreno Río Paraná"],["INM-003","Lotes zona Aeródromo"],["INM-004","Lotes zona Colectora"]]},
+  {g:"Campos y hectáreas", ops:[["INM-005","Hectáreas Ruta 117 · Paso de los Libres"],["INM-006","Hectáreas Ruta 14 · San José"]]},
+  {g:"Otro", ops:[["otro","Sin asignar / material general"]]},
+];
+const NOM_ACTIVO = {};
+ACTIVOS_SEL.forEach(g=>g.ops.forEach(o=>NOM_ACTIVO[o[0]] = g.g==="Otro" ? o[1] : g.g+" · "+o[1]));
+
 const SECCIONES = [
   {id:"imagenes", ico:"🖼️", nombre:"Imágenes", des:"Originales sin editar", cats:CATS_IMG, espejo:false},
   {id:"videos", ico:"🎥", nombre:"Videos", des:"Originales sin editar", cats:CATS_VID, espejo:false},
   {id:"img-flyer", ico:"✨", nombre:"Imágenes Flyer", des:"Editadas listas para subir", cats:CATS_IMG, espejo:true},
   {id:"vid-flyer", ico:"🎬", nombre:"Videos Flyer", des:"Editados listos para subir", cats:CATS_VID, espejo:true},
-  {id:"nuevas", ico:"⬆️", nombre:"Imágenes nuevas", des:"Subí lo que tengas de SDL", cats:[], espejo:false, subir:true},
+  {id:"nuevas", ico:"⬆️", nombre:"Subir material", des:"Subí fotos de cualquier activo", cats:[], espejo:false, subir:true},
 ];
 
 const HTML_SUBIR = `
 <div class="subir-zona">
   <input type="file" id="fileInput" multiple accept="image/*,video/*" style="display:none">
+  <label class="sel-activo">¿A qué activo corresponde?
+    <select id="activoSel"></select>
+  </label>
   <button class="btn-subir" id="btnSubir"><span class="flecha">⬆</span> SUBIR NUEVAS IMÁGENES / VIDEOS</button>
   <div class="subir-tools"><span class="uso" id="uso">0 archivos</span></div>
-  <div class="subir-hint">Desde el celular se abre la galería o la cámara · desde la compu también podés arrastrar los archivos sobre el botón</div>
+  <div class="subir-hint">Elegí primero el activo y después subí: los archivos quedan agrupados por inmueble. Desde el celular se abre la galería o la cámara · en la compu podés arrastrarlos sobre el botón</div>
 </div>
 <div class="dos-col">
   <section class="col-i"><div class="col-head"><h2>Imágenes</h2><span id="cImg">0</span></div><div class="grid-n" id="gridImg"></div></section>
@@ -549,7 +575,18 @@ SECCIONES.forEach((s,i)=>{
     const ed=cuentaEdit(s.cats), tot=cuenta(s.cats);
     html+=`<div class="resumen"><b>${ed}</b> de ${tot} con versión editada · los recuadros punteados esperan su edición, en el mismo orden que el original</div>`;
   }
-  s.cats.forEach(c=>{
+  const ORDEN_PROY=["Solares de Loreto","Torre Aymará","Oberá","Campos y hectáreas","Marca CMD"];
+  const porProy={};
+  s.cats.forEach(c=>{ const k=c.proy||"Otros"; (porProy[k]=porProy[k]||[]).push(c) });
+  const proys=Object.keys(porProy).sort((a,b)=>{
+    const ia=ORDEN_PROY.indexOf(a), ib=ORDEN_PROY.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib);
+  });
+  proys.forEach(proy=>{
+    const cs=porProy[proy];
+    const nProy=cs.reduce((a,c)=>a+c.items.length,0);
+    html+=`<div class="proy"><span class="proy-lin"></span><h3>${proy}</h3><span class="proy-n">${nProy}</span><span class="proy-lin f"></span></div>`;
+    cs.forEach(c=>{
     html+=`<section class="cat"><div class="cat-head"><h2>${c.nombre}</h2><span>${c.items.length}</span><small>${c.drive}</small></div><div class="grid">`;
     c.items.forEach(it=>{
       const eds=EDITADAS[it.file];
@@ -568,6 +605,7 @@ SECCIONES.forEach((s,i)=>{
       </figure>`;
     });
     html+=`</div></section>`;
+    });
   });
   p.innerHTML=html;
   $track.appendChild(p);
@@ -654,7 +692,7 @@ function abrir(file, sec){
   const nomArchivo=file.split("/").pop();
   const datos=`
     <div class="m-datos">
-      <div class="m-dato"><b>Pertenece a</b><span>Solares de Loreto · INM-008</span></div>
+      <div class="m-dato"><b>Pertenece a</b><span>${NOM_ACTIVO[r.activo]||"Sin asignar"}</span></div>
       <div class="m-dato"><b>Ubicación</b><span>Colonia Santa Ana, Sección Loreto, Depto. Candelaria, Misiones</span></div>
       <div class="m-dato"><b>Proyecto</b><span>20 ha · 20 manzanas · ~170 lotes · lote típico 14×35 m (490 m²) · río Yabebiry</span></div>
       <div class="m-dato"><b>Origen</b><span>${it.drive}</span></div>
@@ -764,6 +802,12 @@ const $btn=document.getElementById("btnSubir");
 const $uso=document.getElementById("uso");
 const $gi=document.getElementById("gridImg"), $gv=document.getElementById("gridVid");
 
+
+const $sel=document.getElementById("activoSel");
+$sel.innerHTML = ACTIVOS_SEL.map(g=>`<optgroup label="${g.g}">`+g.ops.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join("")+`</optgroup>`).join("");
+$sel.value = localStorage.getItem("sdl-activo") || "INM-008";
+$sel.onchange = ()=>localStorage.setItem("sdl-activo", $sel.value);
+
 $btn.onclick=()=>$inp.click();
 $inp.onchange=()=>{ guardar([...$inp.files]); $inp.value=""; };
 
@@ -783,6 +827,7 @@ async function guardar(archivos){
       await pedir(store("readwrite").add({
         id:Date.now()*1000+(seq++),
         nombre:f.name, tipo:f.type, peso:f.size, blob:f,
+        activo:($sel.value||"otro"),
         fecha:new Date().toISOString()
       }));
     }
@@ -809,8 +854,15 @@ async function pintarNuevas(){
 
   const imgs=NUEVAS.filter(r=>r.tipo.startsWith("image/"));
   const vids=NUEVAS.filter(r=>r.tipo.startsWith("video/"));
-  $gi.innerHTML = imgs.length ? imgs.map(celdaNueva).join("") : `<div class="vacio">Todavía no hay imágenes nuevas.<br>Tocá el botón de arriba para subir.</div>`;
-  $gv.innerHTML = vids.length ? vids.map(celdaNueva).join("") : `<div class="vacio">Todavía no hay videos nuevos.<br>Tocá el botón de arriba para subir.</div>`;
+  const agrupar = rs => {
+    const g={}; rs.forEach(r=>{ const k=r.activo||"otro"; (g[k]=g[k]||[]).push(r) });
+    return Object.keys(g).map(k=>
+      `<div class="proy"><span class="proy-lin"></span><h3>${NOM_ACTIVO[k]||"Sin asignar"}</h3><span class="proy-n">${g[k].length}</span><span class="proy-lin f"></span></div>`
+      + `<div class="grid-n">` + g[k].map(celdaNueva).join("") + `</div>`
+    ).join("");
+  };
+  $gi.innerHTML = imgs.length ? agrupar(imgs) : `<div class="vacio">Todavía no hay imágenes nuevas.<br>Elegí el activo y tocá el botón de arriba.</div>`;
+  $gv.innerHTML = vids.length ? agrupar(vids) : `<div class="vacio">Todavía no hay videos nuevos.<br>Elegí el activo y tocá el botón de arriba.</div>`;
 
   document.getElementById("cImg").textContent=imgs.length;
   document.getElementById("cVid").textContent=vids.length;
