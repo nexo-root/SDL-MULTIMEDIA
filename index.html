@@ -285,7 +285,8 @@ nav{display:flex;gap:14px;padding:14px 34px 20px;flex-wrap:wrap}
   <header>
     <div>
       <div class="h-tit"><span class="n1">SOLARES DE LORETO</span> <span class="n2">MULTIMEDIA</span></div>
-      <div class="h-sub">USO INTERNO · <b>CMD</b> · Colonia Santa Ana, Sección Loreto, Candelaria, Misiones</div>
+      <div class="h-sub">USO INTERNO · <b>CMD</b> · Multimedia de Solares de Loreto + todos los activos de la empresa</div>
+      <a href="activos.html" style="display:inline-block;margin-top:10px;padding:9px 16px;border-radius:7px;background:#1B5E20;color:#F4EFE3;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;text-decoration:none">Ver cat&aacute;logo de activos &rarr;</a>
     </div>
   </header>
 
@@ -434,7 +435,76 @@ const EDITADAS = {
   "loteo-drone/tractor-mantenimiento.jpg": [{file:FLY+"ed-tractor-mantenimiento.jpg", nombre:"Editorial · Desde el aire"}],
 };
 
+const CATS_ACTIVOS = [
+  { id:"inm-001", nombre:"INM-001 · Depto 1 dorm · Torre Aymará", drive:"Posadas · Beethoven 1650",
+    items: [
+      {file:"activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-01.jpg", nombre:"Depto 1 dorm · Torre Aymará 01", desc:"USD 66.000 · 69 m² · un dormitorio con balcón. Dos unidades: pisos 7 y 13.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-02.jpg", nombre:"Depto 1 dorm · Torre Aymará 02", desc:"USD 66.000 · 69 m² · un dormitorio con balcón. Dos unidades: pisos 7 y 13.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-001-depto-1-dorm-aymara-piso-7-13-i/INM-001-03.jpg", nombre:"Depto 1 dorm · Torre Aymará 03", desc:"USD 66.000 · 69 m² · un dormitorio con balcón. Dos unidades: pisos 7 y 13.", drive:"Posadas · Beethoven 1650"}
+    ] },
+  { id:"inm-002", nombre:"INM-002 · Terreno Río Paraná", drive:"Oberá · casi Dinamarca",
+    items: [
+      {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-01.jpg", nombre:"Terreno Río Paraná 01", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Oberá · casi Dinamarca"},
+      {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-02.jpg", nombre:"Terreno Río Paraná 02", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Oberá · casi Dinamarca"},
+      {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-03.jpg", nombre:"Terreno Río Paraná 03", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Oberá · casi Dinamarca"},
+      {file:"activos/INM-002-terreno-rio-parana-obera/INM-002-04.jpg", nombre:"Terreno Río Paraná 04", desc:"USD 50.000 · 12 × 50 m · un lote.", drive:"Oberá · casi Dinamarca"}
+    ] },
+  { id:"inm-003", nombre:"INM-003 · Lotes zona Aeródromo", drive:"Oberá",
+    items: [
+      {file:"activos/INM-003-lotes-zona-aerodromo-obera/INM-003-01.jpg", nombre:"Lotes zona Aeródromo 01", desc:"USD 25.000 c/u · 12,5 × 32,5 m · dos lotes disponibles.", drive:"Oberá"},
+      {file:"activos/INM-003-lotes-zona-aerodromo-obera/INM-003-02.jpg", nombre:"Lotes zona Aeródromo 02", desc:"USD 25.000 c/u · 12,5 × 32,5 m · dos lotes disponibles.", drive:"Oberá"}
+    ] },
+  { id:"inm-004", nombre:"INM-004 · Lotes zona Colectora", drive:"Oberá · casi Picada Sarmiento",
+    items: [
+      {file:"activos/INM-004-lotes-zona-colectora-obera/INM-004-01.jpg", nombre:"Lotes zona Colectora 01", desc:"USD 25.000 c/u · 12,5 × 37,5 m · dos lotes disponibles.", drive:"Oberá · casi Picada Sarmiento"},
+      {file:"activos/INM-004-lotes-zona-colectora-obera/INM-004-02.jpg", nombre:"Lotes zona Colectora 02", desc:"USD 25.000 c/u · 12,5 × 37,5 m · dos lotes disponibles.", drive:"Oberá · casi Picada Sarmiento"},
+      {file:"activos/INM-004-lotes-zona-colectora-obera/INM-004-03.jpg", nombre:"Lotes zona Colectora 03", desc:"USD 25.000 c/u · 12,5 × 37,5 m · dos lotes disponibles.", drive:"Oberá · casi Picada Sarmiento"}
+    ] },
+  { id:"inm-005", nombre:"INM-005 · Hectáreas Ruta 117", drive:"Paso de los Libres · Corrientes",
+    items: [
+      {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-01.jpg", nombre:"Hectáreas Ruta 117 01", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Paso de los Libres · Corrientes"},
+      {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-02.jpg", nombre:"Hectáreas Ruta 117 02", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Paso de los Libres · Corrientes"},
+      {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-03.jpg", nombre:"Hectáreas Ruta 117 03", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Paso de los Libres · Corrientes"},
+      {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-04.jpg", nombre:"Hectáreas Ruta 117 04", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Paso de los Libres · Corrientes"},
+      {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-05.jpg", nombre:"Hectáreas Ruta 117 05", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Paso de los Libres · Corrientes"},
+      {file:"activos/INM-005-hectareas-ruta-117-paso-de-los-libres/INM-005-06.jpg", nombre:"Hectáreas Ruta 117 06", desc:"Precio a confirmar · 2 hectáreas sobre la entrada.", drive:"Paso de los Libres · Corrientes"}
+    ] },
+  { id:"inm-006", nombre:"INM-006 · Hectáreas Ruta 14", drive:"San José · entrada a Misiones",
+    items: [
+      {file:"activos/INM-006-hectareas-ruta-14-san-jose/INM-006-01.jpg", nombre:"Hectáreas Ruta 14 01", desc:"Precio a confirmar · 1,5 hectáreas.", drive:"San José · entrada a Misiones"},
+      {file:"activos/INM-006-hectareas-ruta-14-san-jose/INM-006-02.jpg", nombre:"Hectáreas Ruta 14 02", desc:"Precio a confirmar · 1,5 hectáreas.", drive:"San José · entrada a Misiones"},
+      {file:"activos/INM-006-hectareas-ruta-14-san-jose/INM-006-03.jpg", nombre:"Hectáreas Ruta 14 03", desc:"Precio a confirmar · 1,5 hectáreas.", drive:"San José · entrada a Misiones"}
+    ] },
+  { id:"inm-008", nombre:"INM-008 · Solares de Loreto", drive:"Loreto · Candelaria",
+    items: [
+      {file:"activos/INM-008-solares-de-loreto/INM-008-01.jpg", nombre:"Solares de Loreto 01", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Loreto · Candelaria"},
+      {file:"activos/INM-008-solares-de-loreto/INM-008-02.jpg", nombre:"Solares de Loreto 02", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Loreto · Candelaria"},
+      {file:"activos/INM-008-solares-de-loreto/INM-008-03.jpg", nombre:"Solares de Loreto 03", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Loreto · Candelaria"},
+      {file:"activos/INM-008-solares-de-loreto/INM-008-04.jpg", nombre:"Solares de Loreto 04", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Loreto · Candelaria"},
+      {file:"activos/INM-008-solares-de-loreto/INM-008-05.jpg", nombre:"Solares de Loreto 05", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Loreto · Candelaria"},
+      {file:"activos/INM-008-solares-de-loreto/INM-008-06.jpg", nombre:"Solares de Loreto 06", desc:"Desde USD 8.000 · lotes de 490 a 1.250 m² con financiación propia.", drive:"Loreto · Candelaria"}
+    ] },
+  { id:"inm-009", nombre:"INM-009 · Terraza rooftop Aymará", drive:"Posadas · Beethoven 1650",
+    items: [
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-01.jpg", nombre:"Terraza rooftop Aymará 01", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-02.jpg", nombre:"Terraza rooftop Aymará 02", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-03.jpg", nombre:"Terraza rooftop Aymará 03", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-04.jpg", nombre:"Terraza rooftop Aymará 04", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-05.jpg", nombre:"Terraza rooftop Aymará 05", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-06.jpg", nombre:"Terraza rooftop Aymará 06", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-07.jpg", nombre:"Terraza rooftop Aymará 07", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-08.jpg", nombre:"Terraza rooftop Aymará 08", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-009-terraza-rooftop-aymara/INM-009-09.jpg", nombre:"Terraza rooftop Aymará 09", desc:"Precio a confirmar · 630 m² de terraza rooftop.", drive:"Posadas · Beethoven 1650"}
+    ] },
+  { id:"inm-010", nombre:"INM-010 · Local planta baja Aymará", drive:"Posadas · Beethoven 1650",
+    items: [
+      {file:"activos/INM-010-local-pb-aymara/INM-010-01.jpg", nombre:"Local planta baja Aymará 01", desc:"Precio a confirmar · 30 m² a la calle.", drive:"Posadas · Beethoven 1650"},
+      {file:"activos/INM-010-local-pb-aymara/INM-010-02.jpg", nombre:"Local planta baja Aymará 02", desc:"Precio a confirmar · 30 m² a la calle.", drive:"Posadas · Beethoven 1650"}
+    ] }
+];
+
 const SECCIONES = [
+  {id:"activos", ico:"🏘️", nombre:"Activos CMD", des:"Todos los inmuebles disponibles", cats:CATS_ACTIVOS, espejo:false},
   {id:"imagenes", ico:"🖼️", nombre:"Imágenes", des:"Originales sin editar", cats:CATS_IMG, espejo:false},
   {id:"videos", ico:"🎥", nombre:"Videos", des:"Originales sin editar", cats:CATS_VID, espejo:false},
   {id:"img-flyer", ico:"✨", nombre:"Imágenes Flyer", des:"Editadas listas para subir", cats:CATS_IMG, espejo:true},
