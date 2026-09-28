@@ -1,0 +1,53 @@
+# Publicador v2: obedece las fechas que se ponen desde el Panel CMD.
+# ARRANCA APAGADO A PROPOSITO (solo manual). Para prenderlo: descomentar "schedule" y, en el mismo commit,
+# sacarle el "schedule" a publicar-flyer.yml. Nunca los dos a la vez: publicarian doble.
+name: Publicar (v2, por fecha)
+
+on:
+  # schedule:
+  #   - cron: '0 13 * * *'   # todos los dias 13:00 UTC = 10:00 ART; el dia lo decide la fecha de cada pieza
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'simular = no publica nada · registrar = solo arma publicadas.json · publicar = de verdad'
+        type: choice
+        options: [simular, registrar, publicar]
+        default: simular
+
+permissions:
+  contents: write   # para anotar publicadas.json
+
+concurrency:
+  group: fabrica-publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Correr el publicador
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          MODO: ${{ github.event.inputs.modo || 'publicar' }}
+        run: |
+          case "$MODO" in
+            simular)   python rutina/publicar_v2.py --simular ;;
+            registrar) python rutina/publicar_v2.py --registrar ;;
+            *)         python rutina/publicar_v2.py ;;
+          esac
+      - name: Guardar el registro de lo publicado
+        if: always()
+        run: |
+          git config user.name "fabrica-de-flyers"
+          git config user.email "fabrica@users.noreply.github.com"
+          git add rutina/publicadas.json 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Fabrica: registro de publicadas"
+          # El panel puede haber guardado mientras tanto: se acomoda arriba de lo ultimo antes de subir.
+          git pull --rebase --autostash && git push
