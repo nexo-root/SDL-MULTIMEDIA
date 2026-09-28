@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-09-28T00:11:24-03:00",
+  "actualizado": "2026-09-28T17:04:26-03:00",
   "publicadas": [
     {
       "id": "loteo-aerea-01",
@@ -140,6 +140,11 @@
       "id": "loteo-aerea-09",
       "fecha": "2026-09-25",
       "ig": "https://www.instagram.com/p/DduCpANIOg1/"
+    },
+    {
+      "id": "loteo-aerea-10",
+      "fecha": "2026-09-28",
+      "ig": ""
     }
   ]
 }
