@@ -4,8 +4,18 @@
 name: Publicar (v2, por fecha)
 
 on:
+  # GitHub corre los horarios cuando puede: el 28/09 el de las 10:00 ART salio a las 17:03. Por eso hay OCHO
+  # intentos cada media hora (minutos impares, que es cuando GitHub esta menos cargado). El primero que corre
+  # publica; los demas ven que hoy ya salio una y no hacen nada (una por dia, ver publicar_v2.py).
   schedule:
-    - cron: '0 13 * * *'   # todos los dias 13:00 UTC = 10:00 ART; el dia lo decide la fecha de cada pieza
+    - cron: '52 12 * * *'   # 09:52 ART
+    - cron: '22 13 * * *'   # 10:22
+    - cron: '52 13 * * *'   # 10:52
+    - cron: '22 14 * * *'   # 11:22
+    - cron: '52 14 * * *'   # 11:52
+    - cron: '22 15 * * *'   # 12:22
+    - cron: '52 15 * * *'   # 12:52
+    - cron: '22 16 * * *'   # 13:22
   workflow_dispatch:
     inputs:
       modo:
